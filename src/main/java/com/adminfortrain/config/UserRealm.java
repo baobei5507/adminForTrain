@@ -1,14 +1,21 @@
 package com.adminfortrain.config;
 
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.AuthenticationInfo;
-import org.apache.shiro.authc.AuthenticationToken;
+import com.adminfortrain.model.User;
+import com.adminfortrain.service.UserService;
+import com.adminfortrain.service.UserServiceImpl;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 public class UserRealm extends AuthorizingRealm {
+
+    @Autowired
+    UserServiceImpl userService;
 
     //授权
     @Override
@@ -19,8 +26,19 @@ public class UserRealm extends AuthorizingRealm {
 
     //认证
     @Override
-    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
+    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         System.out.println("执行了认证");
-        return null;
+
+
+        UsernamePasswordToken userToken = (UsernamePasswordToken) token;
+        User user = userService.queryUserByName(userToken.getUsername());
+
+        if(user == null)
+            return null; //自动抛出UnknownAccountException
+
+
+
+        //password siro处理 不交由用户处理
+        return new SimpleAuthenticationInfo("",user.getPassword(),"");
     }
 }

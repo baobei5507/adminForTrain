@@ -12,9 +12,13 @@
     <div class="login-wrapper">
       <div class="header">登录</div>
       <div class="form-wrapper">
+        <!--登录出错提示信息-->
+        <form action="/login" method="post">
         <input type="text" name="username" placeholder="账号..." class="input-item">
         <input type="password" name="password" placeholder="密码..." class="input-item">
+          <span th:text="${msg}" style="color: red"></span>
         <a href="/main"><input type="submit" value="登录" class="btn"></a>
+        </form>
       </div>
       <div class="msg">
         没有账户? <a href="#">注册</a>
