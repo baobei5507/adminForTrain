@@ -1,0 +1,8 @@
+create table user
+(
+	id int auto_increment,
+	username varchar(15) null,
+	password varchar(15) null,
+	constraint user_pk
+		primary key (id)
+);
