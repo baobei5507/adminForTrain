@@ -39,7 +39,7 @@ public class indexController {
         try {
             //如果登录成功，进入主页
             subject.login(token);
-            return "mainpage";
+            return "redirect:/main";
         } catch (UnknownAccountException e) {
             model.addAttribute("msg","账号错误或不存在");
             return "index";
