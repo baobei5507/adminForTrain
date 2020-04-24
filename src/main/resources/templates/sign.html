@@ -4,24 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../cssforLogin/style.css">
-  <title>请登录</title>
+  <title>请注册</title>
 </head>
 
 <body>
   <div class="container">
     <div class="login-wrapper">
-      <div class="header">登录</div>
+      <div class="header">注册</div>
       <div class="form-wrapper">
-        <!--登录出错提示信息-->
-        <form action="/login" method="post">
+        <form action="/handlesign" method="post">
         <input type="text" name="username" placeholder="账号..." class="input-item">
         <input type="password" name="password" placeholder="密码..." class="input-item">
-          <span th:text="${msg}" style="color: red"></span>
-        <a href="/main"><input type="submit" value="登录" class="btn"></a>
+        <input type="password" name="password2" placeholder="再次输入密码..." class="input-item">
+          <!--两次密码出错提示信息-->
+          <span th:text="${error}"></span>
+        <a href="/sign"><input type="submit" value="注册" class="btn"></a>
         </form>
-      </div>
-      <div class="msg">
-        没有账户? <a href="/sign">注册</a>
       </div>
     </div>
   </div>
