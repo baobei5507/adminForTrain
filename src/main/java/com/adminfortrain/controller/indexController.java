@@ -34,6 +34,8 @@ public class indexController {
         Subject subject = SecurityUtils.getSubject();
         //封装用户的登录信息
         UsernamePasswordToken token = new UsernamePasswordToken(username,password);
+
+        //session获取当前用户名
         request.getSession().setAttribute("user",token.getUsername());
 
         try {

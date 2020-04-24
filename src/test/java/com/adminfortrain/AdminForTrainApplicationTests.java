@@ -1,16 +1,15 @@
 package com.adminfortrain;
 
-import com.adminfortrain.mapper.UserMapper;
-import com.adminfortrain.model.User;
-import com.adminfortrain.service.UserService;
-import com.adminfortrain.service.UserServiceImpl;
+
+import com.adminfortrain.admin.impl.UserServiceImpl;
+import com.adminfortrain.admin.mapper.UserMapper;
+import com.adminfortrain.admin.model.User;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.HashMap;
 import java.util.List;
 
 @SpringBootTest
@@ -18,13 +17,29 @@ class AdminForTrainApplicationTests {
 
     @Autowired
     UserServiceImpl userService;
+    @Autowired
+    UserMapper userMapper;
+
 
 
     @Test
     void testformybatis() {
-        System.out.println(userService.queryUserByName("keke"));
+        List<User> users = userMapper.selectAll();
+        users.forEach(System.out::println);
     }
 
+    @Test
+    void testformybatisPlus() {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("id",1);
+        List<User> users = userMapper.selectByMap(map);
+        users.forEach(System.out::println);
+        System.out.println(users);
+    }
 
+    @Test
+    void test3() {
+
+    }
 
 }
