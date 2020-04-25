@@ -58,7 +58,7 @@
                         <th>电话号码</th>
                         <th>入会时间</th>
                         <th>到期时间</th>
-
+                        <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -80,11 +80,11 @@
                 <!--导航条-->
                 <nav aria-label="Page navigation">
                     <ul class="pagination">
-<!--                        <li th:if="${page.hasPrevious()}" >-->
-<!--                            <a   th:href="'/main?pageNum=' + ${pageNum-1}" aria-label="Previous">-->
-<!--                                <span aria-hidden="true">&laquo;</span>-->
-<!--                            </a>-->
-<!--                        </li>-->
+                        <li th:if="${page.hasPrevious()}" >
+                            <a   th:href="'/main?pageNum=' + ${page.getCurrent()-1}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
                         <li th:each="pageNum:${#numbers.sequence(0, totalPage-1)}">
                             <a th:href="'/main?pageNum=' + ${pageNum+1}" th:text="${pageNum + 1}" >
                                 <span class="sr-only">(current)</span>
@@ -92,11 +92,11 @@
                         </li>
                         </li>
 
-<!--                        <li th:if="${page.hasNext()}">-->
-<!--                            <a th:href="'/main?pageNum=' + ${pageNum+1}" aria-label="Next">-->
-<!--                                <span aria-hidden="true">&raquo;</span>-->
-<!--                            </a>-->
-<!--                        </li>-->
+                        <li th:if="${page.hasNext()}">
+                            <a th:href="'/main?pageNum=' + ${page.getCurrent()+1}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
                     </ul>
                 </nav>
             </div>

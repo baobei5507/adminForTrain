@@ -51,6 +51,8 @@ public class indexController {
          vipMapper.selectPage(vipPage, null);
 
 
+
+
         model.addAttribute("page",vipPage);
         model.addAttribute("vips",vipPage.getRecords());
         model.addAttribute("totalPage",vipPage.getPages());
