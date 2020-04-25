@@ -17,7 +17,7 @@
         <input type="password" name="password" placeholder="密码..." class="input-item">
         <input type="password" name="password2" placeholder="再次输入密码..." class="input-item">
           <!--两次密码出错提示信息-->
-          <span th:text="${error}"></span>
+          <span th:text="${error}" style="color: red" ></span>
         <a href="/sign"><input type="submit" value="注册" class="btn"></a>
         </form>
       </div>
