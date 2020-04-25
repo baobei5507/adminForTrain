@@ -47,7 +47,7 @@ public class AutoMP {
 
         //包配置
         PackageConfig packageInfo = new PackageConfig();
-        packageInfo.setModuleName("admin");//设置模块名字,生成的代码会放在这里面
+        packageInfo.setModuleName("vipAccount");//设置模块名字,生成的代码会放在这里面
         packageInfo.setParent("com.adminfortrain"); //父类
         packageInfo.setEntity("model");//存放实体类包名
         packageInfo.setService("service");
@@ -58,7 +58,7 @@ public class AutoMP {
 
         // 策略配置
         StrategyConfig strategy = new StrategyConfig();
-        strategy.setInclude("user");//设置需要构建的数据库表名
+        strategy.setInclude("vip");//设置需要构建的数据库表名
         strategy.setNaming(NamingStrategy.underline_to_camel);//转驼峰命名
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);//转驼峰命名
         strategy.setEntityLombokModel(true); //开启驼峰命名

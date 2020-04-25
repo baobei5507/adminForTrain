@@ -37,7 +37,7 @@
         <div class="row">
             <div class="col-lg-3">
                 会员管理
-                <a href="" ><span type="button" class="layui-btn layui-btn-radius layui-btn-warm">
+                <a href="/vip/add" ><span type="button" class="layui-btn layui-btn-radius layui-btn-warm">
                     新增会员
                 </span>
                 </a>
@@ -52,32 +52,53 @@
                     <thead>
                     <tr>
                         <th>会员名</th>
+                        <th>性别</th>
+                        <th>年龄</th>
+                        <th>电子邮箱</th>
+                        <th>电话号码</th>
                         <th>入会时间</th>
                         <th>到期时间</th>
+
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>贤心</td>
-                        <td>2016-11-29</td>
-                        <td>2017-11-29
-                  <a href=""><span href="" type="button" class="layui-btn layui-btn-radius layui-btn-primary">
-                            续费
-                        </span>
-                  </a>
-                  <a href=""><span href="" type="button" class="layui-btn layui-btn-radius layui-btn-danger">
-                                退会
-                        </span>
-                  </a>
+                    <tr th:each="vip :${vips}">
+                        <td th:text="${vip.vipname}"></td>
+                        <td th:text="${vip.sex}"></td>
+                        <td th:text="${vip.age}"></td>
+                        <td th:text="${vip.email}"></td>
+                        <td th:text="${vip.telephone}"></td>
+                        <td  th:text="${vip.begintime}"></td>
+                        <td th:text="${vip.endtime}"></td>
+                        <td>
+                            <button class="btn btn-sm btn-primary">编辑</button>
+                            <button class="btn btn-sm btn-danger">删除</button>
                         </td>
-                    </tr>
-                    <tr>
-                        <td>许闲心</td>
-                        <td>2016-11-28</td>
-                        <td>2016-12-28</td>
                     </tr>
                     </tbody>
                 </table>
+                <!--导航条-->
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+<!--                        <li th:if="${page.hasPrevious()}" >-->
+<!--                            <a   th:href="'/main?pageNum=' + ${pageNum-1}" aria-label="Previous">-->
+<!--                                <span aria-hidden="true">&laquo;</span>-->
+<!--                            </a>-->
+<!--                        </li>-->
+                        <li th:each="pageNum:${#numbers.sequence(0, totalPage-1)}">
+                            <a th:href="'/main?pageNum=' + ${pageNum+1}" th:text="${pageNum + 1}" >
+                                <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        </li>
+
+<!--                        <li th:if="${page.hasNext()}">-->
+<!--                            <a th:href="'/main?pageNum=' + ${pageNum+1}" aria-label="Next">-->
+<!--                                <span aria-hidden="true">&raquo;</span>-->
+<!--                            </a>-->
+<!--                        </li>-->
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>

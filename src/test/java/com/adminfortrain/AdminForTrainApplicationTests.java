@@ -4,6 +4,10 @@ package com.adminfortrain;
 import com.adminfortrain.admin.impl.UserServiceImpl;
 import com.adminfortrain.admin.mapper.UserMapper;
 import com.adminfortrain.admin.model.User;
+import com.adminfortrain.vipAccount.impl.VipServiceImpl;
+import com.adminfortrain.vipAccount.mapper.VipMapper;
+import com.adminfortrain.vipAccount.model.Vip;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +20,13 @@ import java.util.List;
 class AdminForTrainApplicationTests {
 
     @Autowired
-    UserServiceImpl userService;
+    VipServiceImpl vipService;
+
     @Autowired
     UserMapper userMapper;
 
-
+    @Autowired
+    VipMapper vipMapper;
 
     @Test
     void testformybatis() {
@@ -39,7 +45,15 @@ class AdminForTrainApplicationTests {
 
     @Test
     void test3() {
-
+        List<Vip> vips = vipMapper.selectList(null);
+        vips.forEach(System.out::println);
     }
 
+
+    @Test
+    void test5(){
+        Page<Vip> page = new Page<>(1,5);
+       vipMapper.selectPage(page, null);
+       page.getRecords().forEach(System.out::println);
+    }
 }

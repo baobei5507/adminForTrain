@@ -1,10 +1,11 @@
 package com.adminfortrain.controller;
 
 
-import com.adminfortrain.admin.impl.UserServiceImpl;
 import com.adminfortrain.admin.mapper.UserMapper;
 import com.adminfortrain.admin.model.User;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.adminfortrain.vipAccount.mapper.VipMapper;
+import com.adminfortrain.vipAccount.model.Vip;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -14,19 +15,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 @Controller
 public class indexController {
 
+
+
     @Autowired
-    UserServiceImpl userService;
+    VipMapper vipMapper;
 
     @Autowired
     UserMapper userMapper;
@@ -39,7 +42,19 @@ public class indexController {
 
     //主页
     @GetMapping("/main")
-    public String mainpage(){
+    public String mainpage(
+            Model model,
+            @RequestParam(value = "pageNum", defaultValue = "1") int currentpage
+    ){
+        //分页查询
+        Page<Vip> vipPage = new Page<>(currentpage,5);
+         vipMapper.selectPage(vipPage, null);
+
+
+        model.addAttribute("page",vipPage);
+        model.addAttribute("vips",vipPage.getRecords());
+        model.addAttribute("totalPage",vipPage.getPages());
+
         return "mainpage";
     }
 
@@ -97,7 +112,7 @@ public class indexController {
         user.setUsername(username);
         user.setPassword(request.getParameter("password"));
         user.setDeleted(0);
-        userService.save(user);
+        userMapper.insert(user);
         return "redirect:/";
     }
 

@@ -6,3 +6,20 @@ create table user
 	constraint user_pk
 		primary key (id)
 );
+create table vip
+(
+	id int auto_increment,
+	vipname varchar(15) not null,
+	sex varchar(10) null,
+	telephone varchar(18) null,
+	age int null,
+	begintime datetime null,
+	endtime datetime null,
+	`delete` int default 0 null comment 'logicdelete
+',
+	gmt_create datetime null,
+	gmt_modified datetime null,
+	constraint vip_pk
+		primary key (id)
+);
+
