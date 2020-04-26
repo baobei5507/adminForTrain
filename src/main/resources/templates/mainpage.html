@@ -71,8 +71,14 @@
                         <td  th:text="${vip.begintime}"></td>
                         <td th:text="${vip.endtime}"></td>
                         <td>
-                            <button class="btn btn-sm btn-primary">编辑</button>
-                            <button class="btn btn-sm btn-danger">删除</button>
+
+                            <button class="btn btn-sm btn-primary">删除</button>
+
+                            <a th:href="@{/vip/verifyvip?id=}+${vip.id}">
+                               <button class="btn btn-sm btn-danger"
+                               >编辑</button>
+                            </a>
+
                         </td>
                     </tr>
                     </tbody>
