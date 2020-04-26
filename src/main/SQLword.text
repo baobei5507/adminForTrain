@@ -17,8 +17,8 @@ create table vip
 	endtime datetime null,
 	`delete` int default 0 null comment 'logicdelete
 ',
-	gmt_create datetime null,
-	gmt_modified datetime null,
+	gmt_create date null,
+	gmt_modified date null,
 	constraint vip_pk
 		primary key (id)
 );
