@@ -43,10 +43,10 @@ public class Vip implements Serializable {
 
     private Date endtime;
 
-    @TableField(fill = FieldFill.INSERT,value = "gmt_create")
+    @TableField(fill = FieldFill.INSERT)
     private Date gmtCreate;
 
-    @TableField(fill = FieldFill.INSERT_UPDATE,value = "gmt_modified")
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date gmtModified;
 
     /**

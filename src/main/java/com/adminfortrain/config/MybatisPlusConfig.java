@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 //@EnableTransactionManagement 开启会报错！！！！坑！！！！！
 @Configuration
 @MapperScan("com.adminfortrain.vipAccount.mapper")
+//mp分页配置
 public class MybatisPlusConfig {
 
     @Bean

@@ -35,14 +35,7 @@
     <div class="container-fluid">
     <div class="row">
         <div class="row">
-            <div class="col-lg-3">
-                会员管理
-                <a href="/vip/add" ><span type="button" class="layui-btn layui-btn-radius layui-btn-warm">
-                    新增会员
-                </span>
-                </a>
-            </div>
-            <div class="col-lg-9">
+            <div class="col-lg-12">
                 <table class="table table-bordered">
                     <colgroup>
                         <col width="150">
@@ -58,11 +51,10 @@
                         <th>电话号码</th>
                         <th>入会时间</th>
                         <th>到期时间</th>
-                        <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="vip :${vips}">
+                    <tr>
                         <td th:text="${vip.vipname}"></td>
                         <td th:text="${vip.sex}"></td>
                         <td th:text="${vip.age}"></td>
@@ -70,44 +62,13 @@
                         <td th:text="${vip.telephone}"></td>
                         <td  th:text="${vip.begintime}"></td>
                         <td th:text="${vip.endtime}"></td>
-                        <td>
-
-                            <a th:href="@{/vip/delete?deleteid=}+${vip.id}">
-                                <button class="btn btn-sm btn-primary"
-                                >删除</button>
-                            </a>
-
-                            <a th:href="@{/vip/verifyvip?id=}+${vip.id}">
-                               <button class="btn btn-sm btn-danger"
-                               >编辑</button>
-                            </a>
-
-                        </td>
                     </tr>
                     </tbody>
                 </table>
-                <!--导航条-->
-                <nav aria-label="Page navigation">
-                    <ul class="pagination">
-                        <li th:if="${page.hasPrevious()}" >
-                            <a   th:href="'/main?pageNum=' + ${page.getCurrent()-1}" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <li th:each="pageNum:${#numbers.sequence(0, totalPage-1)}">
-                            <a th:href="'/main?pageNum=' + ${pageNum+1}" th:text="${pageNum + 1}" >
-                                <span class="sr-only">(current)</span>
-                            </a>
-                        </li>
-                        </li>
-
-                        <li th:if="${page.hasNext()}">
-                            <a th:href="'/main?pageNum=' + ${page.getCurrent()+1}" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+                <span style="color: red">该会员的会员号为 <span th:text="${session.deleteid}"></span></span>
+                <a href="/vip/delete/commit" th:href="@{'/vip/delete/commit?deleteid=' + ${session.deleteid} } ">
+                    <button  class="btn btn-sm btn-primary">确认删除</button>
+                </a>
             </div>
         </div>
     </div>

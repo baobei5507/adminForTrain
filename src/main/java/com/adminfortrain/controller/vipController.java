@@ -8,10 +8,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -80,8 +77,7 @@ public class vipController {
     @GetMapping("/verifyvip")
     public String vervip(
             HttpServletRequest request,
-                          Model model,
-            HttpServletResponse response
+                          Model model
     ){
         int id = Integer.parseInt(request.getParameter("id"));
 
@@ -138,6 +134,30 @@ public class vipController {
         UpdateWrapper<Vip> wrapper = new UpdateWrapper<>();
         wrapper.eq("id",id);
         vipService.update(vip, wrapper);
+        return "redirect:/main";
+    }
+
+    @GetMapping("/delete")
+    public String delete(
+            HttpServletRequest request,
+            Model model
+    ){
+        int id = Integer.parseInt(request.getParameter("deleteid"));
+        Vip vip = vipMapper.selectById(id);
+
+
+        model.addAttribute("vip",vip);
+        request.getSession().setAttribute("deleteid",id);
+        return "deletevip";
+    }
+
+    @GetMapping("/delete/commit")
+    public String suredelete(
+            HttpServletRequest request
+    ){
+        int id = Integer.parseInt(request.getParameter("deleteid"));
+        vipMapper.deleteById(id);
+
         return "redirect:/main";
     }
 
