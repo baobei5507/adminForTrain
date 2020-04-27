@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="../css/layui.css">
+    <link rel="stylesheet" href="../css/sNav.css">
+    <link rel="stylesheet" type="text/css" href="../elsecssjs/main.css">
+    <script src="../js/layui.all.js"></script>
+    <script src="../js/jquery-3.5.0.min.js"></script>
+    <script src="../js/sNav.min.js"></script>
+    <script type="text/javascript" src="../elsecssjs/main.js"></script>
+    <script src="../js/bootstrap.min.js" typeName="application/javascript"></script>
+
+<head>
+    <meta charset="UTF-8">
+    <title>健身管理系统</title>
+</head>
+<body>
+
+
+        <div class="mask-window" id="bg">
+        </div>
+
+        <ul class="example1"  >
+            <a href="/main"> <li>HOME</li> </a>
+            <a href="#"> <li>COMMUNITY</li> </a>
+            <a href="#"> <li>MUSIC</li> </a>
+            <a href="#"> <li>PHOTOGRAPHY</li> </a>
+            <a href="#"> <li>NEWS</li> </a>
+            <a href="/"> <li>退出</li> </a>
+
+        </ul>
+
+
+    <div class="container-fluid">
+    <div class="row">
+        <div class="row">
+            <div class="col-lg-12">
+                <table class="table table-bordered">
+                    <colgroup>
+                        <col width="150">
+                        <col width="200">
+                        <col>
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>会员号</th>
+                        <th>会员名</th>
+                        <th>性别</th>
+                        <th>年龄</th>
+                        <th>电子邮箱</th>
+                        <th>电话号码</th>
+                        <th>入会时间</th>
+                        <th>到期时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td th:text="${vip.id}"></td>
+                        <td th:text="${vip.vipname}"></td>
+                        <td th:text="${vip.sex}"></td>
+                        <td th:text="${vip.age}"></td>
+                        <td th:text="${vip.email}"></td>
+                        <td th:text="${vip.telephone}"></td>
+                        <td  th:text="${vip.begintime}"></td>
+                        <td th:text="${vip.endtime}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    </div>
+
+        <script>
+            var example1 = new sNav('example1');
+            example1.setText({
+                "0":"回到首页",
+                "1":"这是啥",
+                "2":"去逛逛",
+                "3":"去逛逛",
+                "4":"去逛逛",
+                "5":"退出登录"
+            });
+        </script>
+</body>
+</html>

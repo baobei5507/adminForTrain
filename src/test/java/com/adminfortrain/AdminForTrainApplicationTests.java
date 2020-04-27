@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -54,6 +55,11 @@ class AdminForTrainApplicationTests {
     void test5(){
         Page<Vip> page = new Page<>(1,5);
        vipMapper.selectPage(page, null);
-       page.getRecords().forEach(System.out::println);
+        List<Vip> vips = page.getRecords();
+        for (Vip vip : vips) {
+            if(vip.getEndtime().compareTo(new Date()) == -1)
+                vipMapper.deleteById(vip.getId());
+        }
+        System.out.println(new Date());
     }
 }

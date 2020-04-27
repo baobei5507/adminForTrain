@@ -161,4 +161,24 @@ public class vipController {
         return "redirect:/main";
     }
 
+
+    @RequestMapping("/search")
+    public String check(@RequestParam("search_id") int id,
+                        Model model
+    ){
+
+        Vip vip = vipMapper.selectById(id);
+
+        if(vip == null ){
+            model.addAttribute("notfind","无此会员");
+            return "redirect:/main";
+        }
+
+
+        model.addAttribute("vip",vip);
+
+
+        return "checkvip";
+    }
+
 }

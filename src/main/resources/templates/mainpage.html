@@ -22,13 +22,12 @@
         </div>
 
         <ul class="example1"  >
-            <a href="/main"> <li>HOME</li> </a>
-            <a href="#"> <li>COMMUNITY</li> </a>
-            <a href="#"> <li>MUSIC</li> </a>
-            <a href="#"> <li>PHOTOGRAPHY</li> </a>
-            <a href="#"> <li>NEWS</li> </a>
+            <a href="/main"> <li>主页</li> </a>
+            <a href="#"> <li>待完善</li> </a>
+            <a href="#"> <li>待完善</li> </a>
+            <a href="#"> <li>待完善</li> </a>
+            <a href="#"> <li>待完善</li> </a>
             <a href="/"> <li>退出</li> </a>
-
         </ul>
 
 
@@ -42,7 +41,7 @@
                 </span>
                 </a>
             </div>
-            <div class="col-lg-9">
+            <div class="col-lg-9" >
                 <table class="table table-bordered">
                     <colgroup>
                         <col width="150">
@@ -51,6 +50,7 @@
                     </colgroup>
                     <thead>
                     <tr>
+                        <th>会员号</th>
                         <th>会员名</th>
                         <th>性别</th>
                         <th>年龄</th>
@@ -63,6 +63,7 @@
                     </thead>
                     <tbody>
                     <tr th:each="vip :${vips}">
+                        <td th:text="${vip.id}"></td>
                         <td th:text="${vip.vipname}"></td>
                         <td th:text="${vip.sex}"></td>
                         <td th:text="${vip.age}"></td>
@@ -81,11 +82,19 @@
                                <button class="btn btn-sm btn-danger"
                                >编辑</button>
                             </a>
-
                         </td>
                     </tr>
                     </tbody>
                 </table>
+
+                <form action="/vip/search"  style=" float: right ">
+                    <input type="text"  name="search_id">
+                    <input  type="submit" class="layui-btn layui-btn-radius layui-btn-primary" value="搜索">
+                    <span style="color: red">请填写会员号！！</span>
+                </form>
+
+
+
                 <!--导航条-->
                 <nav aria-label="Page navigation">
                     <ul class="pagination">
@@ -117,10 +126,10 @@
             var example1 = new sNav('example1');
             example1.setText({
                 "0":"回到首页",
-                "1":"这是啥",
-                "2":"去逛逛",
-                "3":"去逛逛",
-                "4":"去逛逛",
+                "1":"待完善",
+                "2":"待完善",
+                "3":"待完善",
+                "4":"待完善",
                 "5":"退出登录"
             });
         </script>

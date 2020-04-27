@@ -1,8 +1,10 @@
 package com.adminfortrain.controller;
 
 
+import com.adminfortrain.admin.impl.UserServiceImpl;
 import com.adminfortrain.admin.mapper.UserMapper;
 import com.adminfortrain.admin.model.User;
+import com.adminfortrain.vipAccount.impl.VipServiceImpl;
 import com.adminfortrain.vipAccount.mapper.VipMapper;
 import com.adminfortrain.vipAccount.model.Vip;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -20,13 +22,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 @Controller
 public class indexController {
 
-
+    @Autowired
+    VipServiceImpl vipService;
 
     @Autowired
     VipMapper vipMapper;
@@ -49,8 +55,13 @@ public class indexController {
         //分页查询
         Page<Vip> vipPage = new Page<>(currentpage,5);
          vipMapper.selectPage(vipPage, null);
+        List<Vip> vips = vipPage.getRecords();
 
-
+        //“懒加载” 验证是否过期
+        for (Vip vip : vips) {
+            if(vip.getEndtime().compareTo(new Date()) == -1)
+                vipMapper.deleteById(vip.getId());
+        }
 
 
         model.addAttribute("page",vipPage);
