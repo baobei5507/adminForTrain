@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../cssforLogin/style.css">
+
+  <link rel="stylesheet" href="../css/layui.css">
+  <script src="../layui.all.js"></script>
+  <script src="../js/jquery-3.5.0.min.js"></script>
   <title>请注册</title>
 </head>
 
@@ -13,15 +17,64 @@
       <div class="header">注册</div>
       <div class="form-wrapper">
         <form action="/handlesign" method="post">
-        <input type="text" name="username" placeholder="账号..." class="input-item">
-        <input type="password" name="password" placeholder="密码..." class="input-item">
-        <input type="password" name="password2" placeholder="再次输入密码..." class="input-item">
+        <input type="text" name="username" placeholder="账号..." class="input-item"><i id="true" class="layui-icon layui-icon-ok" style="display: none"></i><i id="false" class="layui-icon layui-icon-close" style="display: none"></i>  <span></span>
+        <input type="password" name="password" placeholder="密码..." class="input-item"><i id="true1" class="layui-icon layui-icon-ok" style="display: none"></i><i id="false1" class="layui-icon layui-icon-close" style="display: none"></i>
+        <input type="password" name="password2" placeholder="再次输入密码..." class="input-item"><i id="true2" class="layui-icon layui-icon-ok" style="display: none"></i><i id="false2" class="layui-icon layui-icon-close" style="display: none"></i>
           <!--两次密码出错提示信息-->
-          <span th:text="${error}" style="color: red" ></span>
+          <div th:text="${error}" style="color: red" ></div>
         <a href="/sign"><input type="submit" value="注册" class="btn"></a>
         </form>
       </div>
     </div>
   </div>
+
+<script>
+  $("input[name='username']").change(function () {
+    var val = $(this).val();
+    $.ajax({
+      url:"/checkout",
+      data:{'username':val},
+      success:function (data) {
+        if(data != "null"){
+          document.getElementById("true").style.display="none";
+          document.getElementById("false").style.display="block";
+          $("span").html("已存在该用户名");
+        }else {
+          $("span").html("该用户名可用");
+          document.getElementById("true").style.display="block";
+          document.getElementById("false").style.display="none";
+        }
+      }
+    })
+  });
+
+
+
+  $("input[name='password']").change(function () {
+    var pwd1 = $(this).val();
+    console.log(pwd1)
+    $("input[name='password2']").change(function () {
+      var pwd2 = $(this).val();
+      console.log(pwd2)
+      console.log(pwd1)
+
+      if(pwd1 == pwd2 && pwd1 != null){
+        document.getElementById("true1").style.display="block";
+        document.getElementById("true2").style.display="block";
+        document.getElementById("false1").style.display="none";
+        document.getElementById("false2").style.display="none";
+      }else {
+        document.getElementById("false1").style.display="block";
+        document.getElementById("false2").style.display="block";
+        document.getElementById("true1").style.display="none";
+        document.getElementById("true2").style.display="none";
+      }
+    })
+  })
+
+
+
+
+</script>
 </body>
 </html>

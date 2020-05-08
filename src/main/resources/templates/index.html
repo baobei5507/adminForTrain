@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../cssforLogin/style.css">
+
+  <link rel="stylesheet" href="../css/layui.css">
+  <script src="../layui.all.js"></script>
+  <script src="../js/jquery-3.5.0.min.js"></script>
   <title>请登录</title>
 </head>
 
@@ -14,7 +18,7 @@
       <div class="form-wrapper">
         <!--登录出错提示信息-->
         <form action="/login" method="post">
-        <input type="text" name="username" placeholder="账号..." class="input-item">
+        <input type="text" name="username"  placeholder="账号..." class="input-item" ><i id="true" class="layui-icon layui-icon-ok" style="display: none"></i><i id="false" class="layui-icon layui-icon-close" style="display: none"></i>
         <input type="password" name="password" placeholder="密码..." class="input-item">
           <span th:text="${msg}" style="color: red"></span>
         <a href="/main"><input type="submit" value="登录" class="btn"></a>
@@ -25,5 +29,30 @@
       </div>
     </div>
   </div>
+
+
+<script>
+  $(":input[name='username']").change( function() {
+    var val = $(this).val();
+    console.log(val);
+    $.ajax({
+      url: "/checkout",
+      data: {'username': val},
+      success: function (data) {
+        if(data!="null"){
+          console.log(data);
+          document.getElementById("true").style.display="block"
+          document.getElementById("false").style.display="none"
+        }else {
+          document.getElementById("false").style.display="block"
+          document.getElementById("true").style.display="none"
+        }
+      }
+    });
+  });
+
+
+
+</script>
 </body>
 </html>

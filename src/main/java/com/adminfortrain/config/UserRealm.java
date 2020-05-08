@@ -37,14 +37,18 @@ public class UserRealm extends AuthorizingRealm {
         queryWrapper.eq("username",userToken.getUsername());
         User user = userMapper.selectOne(queryWrapper);
 
-        //后台测试打印用户是否正确获取
-        System.out.println(user.getUsername()+" "+user.getPassword());
+        try {
+            //后台测试打印用户是否正确获取
+            System.out.println(user.getUsername()+" "+user.getPassword());
 
-        //如果用户不存在
-        if(user.getUsername() == null)
-            return null; //自动抛出UnknownAccountException
+            //如果用户不存在
+            if(user.getUsername() == null)
+                return null; //自动抛出UnknownAccountException
 
-        System.out.println(userToken.getUsername()+"......");
+            System.out.println(userToken.getUsername()+"......");
+        } catch (Exception e) {
+           return null;
+        }
 
         //password siro处理 不交由用户处理
         return new SimpleAuthenticationInfo("",user.getPassword(),"");

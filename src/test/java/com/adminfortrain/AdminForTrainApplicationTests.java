@@ -62,4 +62,12 @@ class AdminForTrainApplicationTests {
         }
         System.out.println(new Date());
     }
+
+    @Test
+    void test6(){
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.eq("username","aaa");
+        User user = userMapper.selectOne(wrapper);
+        System.out.println(user.getUsername());
+    }
 }
