@@ -16,11 +16,14 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,6 +41,14 @@ public class indexController {
 
     @Autowired
     UserMapper userMapper;
+
+    //退出页面
+    @RequestMapping("/logout")
+    public String logout(HttpServletRequest request){
+        request.getSession().removeAttribute("token");
+
+        return "redirect:/";
+    }
 
     //登录页面
     @GetMapping({"/","/index"})
@@ -79,6 +90,7 @@ public class indexController {
 
         //session获取当前用户名
         request.getSession().setAttribute("user",token.getUsername());
+        request.getSession().setAttribute("token",token);
 
         try {
             //如果登录成功，进入主页
@@ -153,6 +165,13 @@ public class indexController {
         } catch (Exception e) {
             return "null";
         }
+    }
+
+    @RequestMapping("/unknow")
+    @ResponseBody
+    public String unknown(){
+
+        return "权限不足";
     }
 
 }

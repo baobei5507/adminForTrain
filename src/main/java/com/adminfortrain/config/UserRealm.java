@@ -4,10 +4,13 @@ package com.adminfortrain.config;
 import com.adminfortrain.admin.mapper.UserMapper;
 import com.adminfortrain.admin.model.User;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -21,7 +24,15 @@ public class UserRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         System.out.println("执行了授权");
-        return null;
+
+        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+
+        Subject subject = SecurityUtils.getSubject();
+        User currentUser= (User) subject.getPrincipal();
+
+        info.addStringPermission(currentUser.getPerms());
+
+        return info;
     }
 
     //认证
@@ -51,6 +62,6 @@ public class UserRealm extends AuthorizingRealm {
         }
 
         //password siro处理 不交由用户处理
-        return new SimpleAuthenticationInfo("",user.getPassword(),"");
+        return new SimpleAuthenticationInfo(user,user.getPassword(),"");
     }
 }

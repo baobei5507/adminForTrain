@@ -20,14 +20,19 @@ public class ShiroConfig {
         ShiroFilterFactoryBean bean = new ShiroFilterFactoryBean();
         bean.setSecurityManager(defaultWebSecurityManager);
 
-        // <!-- authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问-->
-//        Map<String, String> filterMap = new LinkedHashMap<>();
-//        //注意此处的页面路劲不是网页名称，而是MVC中的方法
-//        filterMap.put("/main","anon");
-//        bean.setFilterChainDefinitionMap(filterMap);
+         //authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问
+        Map<String, String> filterMap = new LinkedHashMap<>();
+        //注意此处的页面路劲不是网页名称，而是MVC中的方法
+        filterMap.put("/main","perms[user:add]");
+        bean.setFilterChainDefinitionMap(filterMap);
 
         //设置账户权限不足时返回路径
-//        bean.setLoginUrl("/index");
+        bean.setLoginUrl("/index");
+
+        //设置账户权限不足时返回路径
+        bean.setUnauthorizedUrl("/unknow");
+
+
         return bean;
     }
 
