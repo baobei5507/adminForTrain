@@ -140,6 +140,7 @@ public class indexController {
         user.setUsername(username);
         user.setPassword(request.getParameter("password"));
         user.setDeleted(0);
+        user.setPerms("user:add");
         userMapper.insert(user);
         return "redirect:/";
     }

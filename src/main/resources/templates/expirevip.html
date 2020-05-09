@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" href="../css/bootstrap.min.css">
+<link rel="stylesheet" href="../css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="../css/layui.css">
+<link rel="stylesheet" href="../css/sNav.css">
+<link rel="stylesheet" type="text/css" href="../css/gradualChange.css">
+<link rel="stylesheet" type="text/css" href="../elsecssjs/main.css">
+<script src="../js/layui.all.js"></script>
+<script src="../js/jquery-3.5.0.min.js"></script>
+<script src="../js/sNav.min.js"></script>
+<script type="text/javascript" src="../elsecssjs/main.js"></script>
+<script src="../js/bootstrap.min.js" typeName="application/javascript"></script>
+
+<head>
+    <meta charset="UTF-8">
+    <title>健身管理系统</title>
+</head>
+<body>
+
+
+
+
+
+<div th:insert="navigation.html">
+
+</div>
+
+<form action="/vip/search"  style=" float: right ">
+    <input type="text"  name="search_id">
+    <input  type="submit" class="layui-btn layui-btn-radius layui-btn-primary" value="搜索">
+    <span style="color: white">请填写会员号！！</span>
+</form>
+
+<div class="container-fluid">
+    <div class="word1" >
+        <div class="row">
+            <div class="row">
+                <div class="col-lg-3">
+                    会员管理
+                    <a href="/vip/add" ><span type="button" class="layui-btn layui-btn-radius layui-btn-warm">
+                    新增会员
+                </span>
+                    </a>
+                </div>
+                <div class="col-lg-9" >
+                    <table class="table table-bordered">
+                        <colgroup>
+                            <col width="150">
+                            <col width="200">
+                            <col>
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th>会员号</th>
+                            <th>会员名</th>
+                            <th>性别</th>
+                            <th>年龄</th>
+                            <th>电子邮箱</th>
+                            <th>电话号码</th>
+                            <th>入会时间</th>
+                            <th>到期时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="vip :${vips}">
+                            <td th:text="${vip.id}"></td>
+                            <td th:text="${vip.vipname}"></td>
+                            <td th:text="${vip.sex}"></td>
+                            <td th:text="${vip.age}"></td>
+                            <td th:text="${vip.email}"></td>
+                            <td th:text="${vip.telephone}"></td>
+                            <td  th:text="${vip.begintime}"></td>
+                            <td th:text="${vip.endtime}"></td>
+                            <td>
+
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <!--导航条-->
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination">
+                            <li th:if="${page.hasPrevious()}" >
+                                <a   th:href="'/main?pageNum=' + ${page.getCurrent()-1}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li th:each="pageNum:${#numbers.sequence(0, totalPage-1)}">
+                                <a th:href="'/main?pageNum=' + ${pageNum+1}" th:text="${pageNum + 1}" >
+                                    <span class="sr-only">(current)</span>
+                                </a>
+                            </li>
+                            </li>
+
+                            <li th:if="${page.hasNext()}">
+                                <a th:href="'/main?pageNum=' + ${page.getCurrent()+1}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var example1 = new sNav('example1');
+    example1.setText({
+        "0":"回到首页",
+        "1":"待完善",
+        "2":"待完善",
+        "3":"待完善",
+        "4":"待完善",
+        "5":"退出登录"
+    });
+</script>
+</body>
+</html>

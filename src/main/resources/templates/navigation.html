@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" href="../css/bootstrap.min.css">
+<link rel="stylesheet" href="../css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="../css/layui.css">
+<link rel="stylesheet" href="../css/sNav.css">
+<link rel="stylesheet" type="text/css" href="../css/gradualChange.css">
+<link rel="stylesheet" type="text/css" href="../elsecssjs/main.css">
+<script src="../js/layui.all.js"></script>
+<script src="../js/jquery-3.5.0.min.js"></script>
+<script src="../js/sNav.min.js"></script>
+<script type="text/javascript" src="../elsecssjs/main.js"></script>
+<script src="../js/bootstrap.min.js" typeName="application/javascript"></script>
+
+<head>
+    <meta charset="UTF-8">
+    <title>健身管理系统</title>
+</head>
+<body>
+
+
+
+<div th:fragment="nav">
+    <ul class="example1"  >
+        <a href="/main"> <li>主页</li> </a>
+        <a href="/vip/expireVip"> <li>已过期或注销会员</li> </a>
+        <a href="#"> <li>待完善</li> </a>
+        <a href="#"> <li>待完善</li> </a>
+        <a href="#"> <li>待完善</li> </a>
+        <a href="/logout"> <li>退出</li> </a>
+    </ul>
+
+
+    <script>
+        var example1 = new sNav('example1');
+        example1.setText({
+            "0":"回到首页",
+            "1":"希望回来",
+            "2":"待完善",
+            "3":"待完善",
+            "4":"待完善",
+            "5":"退出登录"
+        });
+    </script>
+
+</div>
+
+
+</body>
+</html>

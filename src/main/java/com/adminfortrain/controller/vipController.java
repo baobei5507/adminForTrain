@@ -4,19 +4,19 @@ package com.adminfortrain.controller;
 import com.adminfortrain.vipAccount.impl.VipServiceImpl;
 import com.adminfortrain.vipAccount.mapper.VipMapper;
 import com.adminfortrain.vipAccount.model.Vip;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.crypto.Data;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping("/vip")
@@ -159,6 +159,26 @@ public class vipController {
         vipMapper.deleteById(id);
 
         return "redirect:/main";
+    }
+
+    //主页
+    @GetMapping("/expireVip")
+    public String expire(
+            Model model,
+            @RequestParam(value = "pageNum", defaultValue = "1") int currentpage
+    ){
+        //分页查询
+        QueryWrapper wrapper = new QueryWrapper();
+        wrapper.eq("deleted",1);
+        List<Vip> deletedvips = vipMapper.getDeleted(wrapper);
+        Page vipPage = vipMapper.selectPage(new Page<>(currentpage, 5),wrapper);
+
+
+        model.addAttribute("page",vipPage);
+        model.addAttribute("vips",deletedvips);
+        model.addAttribute("totalPage",vipPage.getPages());
+
+        return "expirevip";
     }
 
 

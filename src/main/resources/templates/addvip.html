@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="../css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="../css/layui.css">
     <link rel="stylesheet" href="../css/sNav.css">
+    <link rel="stylesheet" type="text/css" href="../css/gradualChange.css">
     <link rel="stylesheet" type="text/css" href="../elsecssjs/main.css">
     <script src="../js/layui.all.js"></script>
     <script src="../js/jquery-3.5.0.min.js"></script>
@@ -17,9 +18,11 @@
 </head>
 <body>
 
+<div th:insert="navigation.html">
 
-        <div class="mask-window" id="bg">
+</div>
             <div class="container-fluid">
+                <div class="word1" >
                 <div class="row">
                     <form action="/vip/add" method="post">
                         <div class="form-group">
@@ -53,18 +56,7 @@
                     </form>
                 </div>
             </div>
-
-        </div>
-
-        <ul class="example1"  >
-            <a href="/main"> <li>HOME</li> </a>
-            <a href="#"> <li>COMMUNITY</li> </a>
-            <a href="#"> <li>MUSIC</li> </a>
-            <a href="#"> <li>PHOTOGRAPHY</li> </a>
-            <a href="#"> <li>NEWS</li> </a>
-            <a href="/logout"> <li>退出</li> </a>
-
-        </ul>
+            </div>
 
 
 
@@ -72,16 +64,5 @@
 
 
 
-        <script>
-            var example1 = new sNav('example1');
-            example1.setText({
-                "0":"回到首页",
-                "1":"这是啥",
-                "2":"去逛逛",
-                "3":"去逛逛",
-                "4":"去逛逛",
-                "5":"退出登录"
-            });
-        </script>
 </body>
 </html>
