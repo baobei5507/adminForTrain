@@ -17,7 +17,7 @@
       <div class="form-wrapper">
         <!--登录出错提示信息-->
         <form action="/login" method="post">
-        <input type="text" name="username"  placeholder="账号..." class="input-item" ><i id="true" class="layui-icon layui-icon-ok" style="display: none"></i><i id="false" class="layui-icon layui-icon-close" style="display: none"></i>
+        <input type="text" name="username"  placeholder="账号..." class="input-item" ><img id="true" src="../images/yes.png" style="width: 29px;display: none"><img id="false" src="../images/wrong.png" style="width: 29px;display: none">
         <input type="password" name="password" placeholder="密码..." class="input-item">
           <span th:text="${msg}" style="color: red"></span>
         <a href="/main"><input type="submit" value="登录" class="btn"></a>

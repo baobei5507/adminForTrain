@@ -70,4 +70,10 @@ class AdminForTrainApplicationTests {
         User user = userMapper.selectOne(wrapper);
         System.out.println(user.getUsername());
     }
+
+    @Test
+    void test7(){
+        List<Vip> del = vipMapper.getDel(1, 5);
+        del.forEach(System.out::println);
+    }
 }

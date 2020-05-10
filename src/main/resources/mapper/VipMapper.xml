@@ -2,4 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.adminfortrain.vipAccount.mapper.VipMapper">
 
+    <select id="getDel" resultType="com.adminfortrain.vipAccount.model.Vip">
+        select * from vip where deleted = 1 Limit  #{current},#{size}
+    </select>
 </mapper>

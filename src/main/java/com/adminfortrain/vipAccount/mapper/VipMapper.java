@@ -25,4 +25,7 @@ public interface VipMapper extends BaseMapper<Vip> {
 
     @Select("select * from vip  ${ew.customSqlSegment}")
     List<Vip> getDeleted(@Param(Constants.WRAPPER) Wrapper wrapper);
+
+    //获取已过期的vip
+    List<Vip> getDel(int current,int size);
 }

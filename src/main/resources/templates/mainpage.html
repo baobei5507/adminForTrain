@@ -5,11 +5,9 @@
     <link rel="stylesheet" href="../css/layui.css">
     <link rel="stylesheet" href="../css/sNav.css">
     <link rel="stylesheet" type="text/css" href="../css/gradualChange.css">
-    <link rel="stylesheet" type="text/css" href="../elsecssjs/main.css">
-    <script src="../js/layui.all.js"></script>
+    <script src="../layui.all.js"></script>
     <script src="../js/jquery-3.5.0.min.js"></script>
     <script src="../js/sNav.min.js"></script>
-    <script type="text/javascript" src="../elsecssjs/main.js"></script>
     <script src="../js/bootstrap.min.js" typeName="application/javascript"></script>
 
 <head>
@@ -65,25 +63,21 @@
                     </thead>
                     <tbody>
                     <tr th:each="vip :${vips}">
-                        <td th:text="${vip.id}"></td>
+                        <td th:text="${vip.id}" id="vipid"></td>
                         <td th:text="${vip.vipname}"></td>
                         <td th:text="${vip.sex}"></td>
                         <td th:text="${vip.age}"></td>
                         <td th:text="${vip.email}"></td>
                         <td th:text="${vip.telephone}"></td>
-                        <td  th:text="${vip.begintime}"></td>
-                        <td th:text="${vip.endtime}"></td>
+                        <td  th:text="${#dates.format(vip.begintime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                        <td th:text="${#dates.format(vip.endtime, 'yyyy-MM-dd HH:mm:ss')}"></td>
                         <td>
-
                             <a th:href="@{/vip/delete?deleteid=}+${vip.id}">
                                 <button class="btn btn-sm btn-primary"
                                 >删除</button>
                             </a>
-
-                            <a th:href="@{/vip/verifyvip?id=}+${vip.id}">
-                               <button class="btn btn-sm btn-danger"
+                               <button class="btn btn-sm btn-danger" name="verify" th:src="" th:value="${vip.id}"
                                >编辑</button>
-                            </a>
                         </td>
                     </tr>
                     </tbody>
@@ -116,6 +110,75 @@
     </div>
         </div>
 
+
+        <div id="moniItemModel" style="display: none" >
+            <form action="/vip/verifyvip/success" method="post">
+                <div class="form-group">
+                    <span th:text="${error}" style="color:red;"></span>
+                    您的会员号为<span th:text="${session.vipid}"></span><p></p>
+                    <label >邮箱地址</label>
+                    <input type="email" class="form-control" id="Email" name="Email" th:value="${session.email}" placeholder="邮箱">
+                </div>
+                <div class="form-group">
+                    <label>会员名</label>
+                    <input type="text" class="form-control" id="vipname" name="vipname" th:value="${session.vipname}" placeholder="会员名">
+                </div>
+
+                <div class="form-group">
+                    <label>年龄</label>
+                    <input type="text" class="form-control" id="age" name="age" th:value="${session.age}" placeholder="年龄">
+                </div>
+                <div class="form-group">
+                    <label>电话号码</label>
+                    <input type="text" class="form-control" id="telephone" name="telephone" th:value="${session.telephone}" placeholder="电话号码">
+                </div>
+                <div class="form-group">
+                    <label>性别</label>
+                    <input type="text" class="form-control" id="sex" name="sex" th:value="${session.sex}" placeholder="性别">
+                </div>
+                <div class="form-group">
+                    <label>终止日期</label><p></p>
+                    <span style="color: #bce8f1">日期格式示例:2019-9-19</span>
+                    <input type="text" class="form-control" id="endtime" name="endtime" th:value="${session.endtime}" placeholder="终止日期">
+                    <span th:text="${errordate}" style="color: red"></span>
+                </div>
+                <button type="submit" class="btn btn-default">确认修改</button>
+            </form>
+        </div>
+
+
+<script>
+
+
+$(":button[name='verify']").on('click',function () {
+    var uid = $(this).val();
+
+    $.ajax({
+        url:"/vip/changeVip",
+        data:{'vipid':uid},
+        success:function (data) {
+            console.log(data);
+
+        }
+    });
+
+    layer.open({
+        type:1,
+        title:'编辑',
+        area:['500px','600px'],
+        shadeClose:true,//点击遮罩层关闭
+        content:$('#moniItemModel'),
+        anim:5,
+        end:function (res) {
+            $("#moniItemModel").css("display","none");
+            location.reload();
+        }
+    });
+
+
+})
+
+</script>
 
 
 </body>

@@ -74,6 +74,7 @@ public class indexController {
         }
 
 
+
         model.addAttribute("page",vipPage);
         model.addAttribute("vips",vipPage.getRecords());
         model.addAttribute("totalPage",vipPage.getPages());

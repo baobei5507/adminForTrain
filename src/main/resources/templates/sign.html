@@ -18,11 +18,11 @@
       <div class="header">注册</div>
       <div class="form-wrapper">
         <form action="/handlesign" method="post">
-        <input type="text" name="username" placeholder="账号..." class="input-item"><i id="true" class="layui-icon layui-icon-ok" style="display: none"></i><i id="false" class="layui-icon layui-icon-close" style="display: none"></i>  <span></span>
-        <input type="password" name="password" placeholder="密码..." class="input-item"><i id="true1" class="layui-icon layui-icon-ok" style="display: none"></i><i id="false1" class="layui-icon layui-icon-close" style="display: none"></i>
-        <input type="password" name="password2" placeholder="再次输入密码..." class="input-item"><i id="true2" class="layui-icon layui-icon-ok" style="display: none"></i><i id="false2" class="layui-icon layui-icon-close" style="display: none"></i>
+        <input type="text" name="username" placeholder="账号..." class="input-item"><img id="true" src="../images/yes.png" style="width: 29px;display: none"><img id="false" src="../images/wrong.png" style="width: 29px;display: none"> <span></span>
+        <input type="password" name="password" placeholder="密码..." class="input-item"><img id="true1" src="../images/yes.png" style="width: 29px;display: none"><img id="false1" src="../images/wrong.png" style="width: 29px;display: none">
+        <input type="password" name="password2" placeholder="再次输入密码..." class="input-item"><img id="true2" src="../images/yes.png" style="width: 29px;display: none"><img id="false2" src="../images/wrong.png" style="width: 29px;display: none">
           <!--两次密码出错提示信息-->
-          <div th:text="${error}" style="color: red" ></div>
+          <div  th:text="${error}" style="color: red" ></div>
         <a href="/sign"><input type="submit" value="注册" class="btn"></a>
         </form>
       </div>

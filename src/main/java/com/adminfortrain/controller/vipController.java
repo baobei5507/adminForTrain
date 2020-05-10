@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -92,6 +93,7 @@ public class vipController {
         String endtime = simpleDateFormat.format(vip.getEndtime());
         model.addAttribute("endtime",endtime);
 
+
         request.getSession().setAttribute("id",id);
         return "verifyvip";
     }
@@ -101,7 +103,7 @@ public class vipController {
             Model model,
             HttpServletRequest request
     ){
-        int id = (int) request.getSession().getAttribute("id");
+        int id = (int) request.getSession().getAttribute("vipid");
 
         Vip vip = new Vip();
         String email = request.getParameter("Email");
@@ -168,14 +170,14 @@ public class vipController {
             @RequestParam(value = "pageNum", defaultValue = "1") int currentpage
     ){
         //分页查询
-        QueryWrapper wrapper = new QueryWrapper();
-        wrapper.eq("deleted",1);
-        List<Vip> deletedvips = vipMapper.getDeleted(wrapper);
-        Page vipPage = vipMapper.selectPage(new Page<>(currentpage, 5),wrapper);
+
+        List<Vip> delvips = vipMapper.getDel(currentpage, 5);
+
+        Page vipPage = vipMapper.selectPage(new Page<>(currentpage, 5),null);
 
 
         model.addAttribute("page",vipPage);
-        model.addAttribute("vips",deletedvips);
+        model.addAttribute("vips",delvips);
         model.addAttribute("totalPage",vipPage.getPages());
 
         return "expirevip";
@@ -199,6 +201,33 @@ public class vipController {
 
 
         return "checkvip";
+    }
+
+    @RequestMapping("/changeVip")
+    @ResponseBody
+    public Vip change(
+                         HttpServletRequest request,
+                          int vipid,
+                         Model model
+    ){
+        System.out.println(vipid);
+        Vip vip = vipMapper.selectById(vipid);
+        request.getSession().setAttribute("email",vip.getEmail());
+        request.getSession().setAttribute("age",vip.getAge());
+        request.getSession().setAttribute("sex",vip.getSex());
+        request.getSession().setAttribute("vipname",vip.getVipname());
+        request.getSession().setAttribute("telephone",vip.getTelephone());
+
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String endtime = simpleDateFormat.format(vip.getEndtime());
+
+        request.getSession().setAttribute("endtime",endtime);
+        request.getSession().setAttribute("vipid",vip.getId());
+
+        System.out.println(request.getSession().getAttribute("vipid"));
+
+        return vip;
     }
 
 }

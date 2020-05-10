@@ -5,7 +5,7 @@
 .sNav>a span{background:#FFB739; text-align: center; color: white;}
 
 /*example1*/
-.example1{height:60px; padding: 0;margin:0 auto; width:1060px;}
+.example1{height:60px; padding: 0;margin:0 571px; width:1060px;}
 .example1>a{font-size:20px; list-style: none; float:left;  text-decoration: none; position: relative; font-weight:bold; overflow: hidden;}
 .example1>a li{background:rgb(0, 216, 224); padding:0px 30px; text-align: center; color:white; height: 60px; line-height:60px;}
 .example1>a span{background:#FFB739; text-align: center; color: white;display: block;}
