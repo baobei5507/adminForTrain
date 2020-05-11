@@ -24,9 +24,11 @@ public class ShiroConfig {
         Map<String, String> filterMap = new LinkedHashMap<>();
         //注意此处的页面路劲不是网页名称，而是MVC中的方法
         filterMap.put("/main","perms[user:add]");
+        //拦截所有vip请求的操作
+        filterMap.put("/vip/**","perms[user:add]");
         bean.setFilterChainDefinitionMap(filterMap);
 
-        //设置账户权限不足时返回路径
+        //设置登录返回路径
         bean.setLoginUrl("/index");
 
         //设置账户权限不足时返回路径

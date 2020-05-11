@@ -43,6 +43,12 @@ public class Vip implements Serializable {
 
     private Date endtime;
 
+    private Date signdate;
+
+    private Integer signcation;
+
+    private Integer signcount;
+
     @TableField(fill = FieldFill.INSERT)
     private Date gmtCreate;
 
