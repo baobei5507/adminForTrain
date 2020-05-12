@@ -4,7 +4,6 @@ package com.adminfortrain.controller;
 import com.adminfortrain.vipAccount.impl.VipServiceImpl;
 import com.adminfortrain.vipAccount.mapper.VipMapper;
 import com.adminfortrain.vipAccount.model.Vip;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -75,35 +73,15 @@ public class vipController {
         return "addvip";
     }
 
-    @GetMapping("/verifyvip")
-    public String vervip(
-            HttpServletRequest request,
-                          Model model
-    ){
-        int id = Integer.parseInt(request.getParameter("id"));
-
-        Vip vip = vipMapper.selectById(id);
-        model.addAttribute("email",vip.getEmail());
-        model.addAttribute("age",vip.getAge());
-        model.addAttribute("sex",vip.getSex());
-        model.addAttribute("vipname",vip.getVipname());
-        model.addAttribute("telephone",vip.getTelephone());
-
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String endtime = simpleDateFormat.format(vip.getEndtime());
-        model.addAttribute("endtime",endtime);
 
 
-        request.getSession().setAttribute("id",id);
-        return "verifyvip";
-    }
 
-    @PostMapping("/verifyvip/success")
+    @RequestMapping("/verifyvip/success")
     public String verifyvip(
             Model model,
             HttpServletRequest request
     ){
-        int id = (int) request.getSession().getAttribute("vipid");
+        int id = (int) request.getSession().getAttribute("id");
 
         Vip vip = new Vip();
         String email = request.getParameter("Email");
@@ -119,7 +97,7 @@ public class vipController {
             vip.setEndtime(date);
         } catch (ParseException e) {
             model.addAttribute("errordate","日期格式错误");
-            return "verifyvip";
+            return "amm";
         }
 
         try {
@@ -130,7 +108,7 @@ public class vipController {
             vip.setEmail(email);
         }catch (Exception e){
             model.addAttribute("error","所有信息必填，请务必填写");
-            return "verifyvip";
+            return "amm";
         }
 
         UpdateWrapper<Vip> wrapper = new UpdateWrapper<>();
@@ -203,31 +181,30 @@ public class vipController {
         return "checkvip";
     }
 
-    @RequestMapping("/changeVip")
-    @ResponseBody
-    public Vip change(
-                         HttpServletRequest request,
-                          int vipid,
-                         Model model
-    ){
-        System.out.println(vipid);
-        Vip vip = vipMapper.selectById(vipid);
-        request.getSession().setAttribute("email",vip.getEmail());
-        request.getSession().setAttribute("age",vip.getAge());
-        request.getSession().setAttribute("sex",vip.getSex());
-        request.getSession().setAttribute("vipname",vip.getVipname());
-        request.getSession().setAttribute("telephone",vip.getTelephone());
 
+
+    //弹出层编辑
+    @GetMapping("/getit")
+    public String getit(
+            HttpServletRequest request,
+            Model model,
+            int vipid
+    ){
+        int id = vipid;
+        Vip vip = vipMapper.selectById(id);
+        model.addAttribute("email",vip.getEmail());
+        model.addAttribute("age",vip.getAge());
+        model.addAttribute("sex",vip.getSex());
+        model.addAttribute("vipname",vip.getVipname());
+        model.addAttribute("telephone",vip.getTelephone());
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String endtime = simpleDateFormat.format(vip.getEndtime());
+        model.addAttribute("endtime",endtime);
 
-        request.getSession().setAttribute("endtime",endtime);
-        request.getSession().setAttribute("vipid",vip.getId());
 
-        System.out.println(request.getSession().getAttribute("vipid"));
-
-        return vip;
+        request.getSession().setAttribute("id",id);
+        return "verifypopup";
     }
 
 }

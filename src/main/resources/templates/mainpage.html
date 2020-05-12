@@ -111,40 +111,7 @@
         </div>
 
 
-        <div id="moniItemModel" style="display: none" >
-            <form action="/vip/verifyvip/success" method="post">
-                <div class="form-group">
-                    <span th:text="${error}" style="color:red;"></span>
-                    您的会员号为<span id="555" th:text="${session.vipid}"></span><p></p>
-                    <label >邮箱地址</label>
-                    <input type="email" class="form-control" id="Email" name="Email" th:value="${session.email}" placeholder="邮箱">
-                </div>
-                <div class="form-group">
-                    <label>会员名</label>
-                    <input type="text" class="form-control" id="vipname" name="vipname" th:value="${session.vipname}" placeholder="会员名">
-                </div>
 
-                <div class="form-group">
-                    <label>年龄</label>
-                    <input type="text" class="form-control" id="age" name="age" th:value="${session.age}" placeholder="年龄">
-                </div>
-                <div class="form-group">
-                    <label>电话号码</label>
-                    <input type="text" class="form-control" id="telephone" name="telephone" th:value="${session.telephone}" placeholder="电话号码">
-                </div>
-                <div class="form-group">
-                    <label>性别</label>
-                    <input type="text" class="form-control" id="sex" name="sex" th:value="${session.sex}" placeholder="性别">
-                </div>
-                <div class="form-group">
-                    <label>终止日期</label><p></p>
-                    <span style="color: #bce8f1">日期格式示例:2019-9-19</span>
-                    <input type="text" class="form-control" id="endtime" name="endtime" th:value="${session.endtime}" placeholder="终止日期">
-                    <span th:text="${errordate}" style="color: red"></span>
-                </div>
-                <button type="submit" class="btn btn-default">确认修改</button>
-            </form>
-        </div>
 
 
 <script>
@@ -153,23 +120,15 @@
 $(":button[name='verify']").on('click',function () {
     var uid = $(this).val();
 
-    $.ajax({
-        url:"/vip/changeVip",
-        data:{'vipid':uid},
-        success:function (data) {
-            console.log(data);
-        }
-    });
 
     layer.open({
-        type:1,
+        type:2,
         title:'编辑',
         area:['500px','600px'],
         shadeClose:true,//点击遮罩层关闭
-        content:$('#moniItemModel'),
+        content: "/vip/getit?vipid="+uid,
         anim:5,
-        end:function (res) {
-            $("#moniItemModel").css("display","none");
+        end:function () {
             location.reload();
         }
     });

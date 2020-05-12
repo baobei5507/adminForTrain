@@ -18,11 +18,14 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.web.servlet.server.Session;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,6 +39,11 @@ import java.util.List;
 
 @Controller
 public class indexController {
+
+
+
+    @Resource
+    private RedisTemplate<String,Vip> template;
 
     @Autowired
     VipServiceImpl vipService;
@@ -66,10 +74,12 @@ public class indexController {
             Model model,
             @RequestParam(value = "pageNum", defaultValue = "1") int currentpage
     ){
+
         //分页查询
         Page<Vip> vipPage = new Page<>(currentpage,5);
          vipMapper.selectPage(vipPage, null);
         List<Vip> vips = vipPage.getRecords();
+
 
         //“懒加载” 验证是否过期
         for (Vip vip : vips) {
@@ -182,9 +192,13 @@ public class indexController {
     @ResponseBody
     public List<Integer> datasource(){
 
+
         QueryWrapper<Vip> queryWrapper = new QueryWrapper<>();
         queryWrapper.between("age",10,20);
         List<Object> vip1 = vipMapper.selectObjs(queryWrapper);
+
+
+
 
         QueryWrapper<Vip> queryWrapper2 = new QueryWrapper<>();
         queryWrapper2.between("age",20,30);
