@@ -40,14 +40,14 @@ public class AutoMP {
         sourceConfig.setUsername("root");
         sourceConfig.setPassword("root");
         sourceConfig.setDriverName("com.mysql.cj.jdbc.Driver");
-        sourceConfig.setUrl("jdbc:mysql://localhost:3306/test?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=false");
+        sourceConfig.setUrl("jdbc:mysql://localhost:3306/test?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&useSSL=false");
         sourceConfig.setDbType(DbType.MYSQL);//设置数据库类型
         mpg.setDataSource(sourceConfig);
 
 
         //包配置
         PackageConfig packageInfo = new PackageConfig();
-        packageInfo.setModuleName("vipAccount");//设置模块名字,生成的代码会放在这里面
+        packageInfo.setModuleName("peopleCount");//设置模块名字,生成的代码会放在这里面
         packageInfo.setParent("com.adminfortrain"); //父类
         packageInfo.setEntity("model");//存放实体类包名
         packageInfo.setService("service");
@@ -58,12 +58,12 @@ public class AutoMP {
 
         // 策略配置
         StrategyConfig strategy = new StrategyConfig();
-        strategy.setInclude("vip");//设置需要构建的数据库表名
+        strategy.setInclude("datetime");//设置需要构建的数据库表名
         strategy.setNaming(NamingStrategy.underline_to_camel);//转驼峰命名
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);//转驼峰命名
         strategy.setEntityLombokModel(true); //开启驼峰命名
 //        strategy.setRestControllerStyle(true); //controller自己写 不需要配置
-        strategy.setLogicDeleteFieldName("deleted");//设置逻辑删除
+//        strategy.setLogicDeleteFieldName("deleted");//设置逻辑删除
         TableFill gmtCreate = new TableFill("gmt_create", FieldFill.INSERT);//设置创建时间填充策略
         TableFill gmtModified = new TableFill("gmt_modified", FieldFill.INSERT_UPDATE);//修改时间
         ArrayList<TableFill> list = new ArrayList<>();

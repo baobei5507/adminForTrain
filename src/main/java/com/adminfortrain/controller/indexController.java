@@ -4,6 +4,8 @@ package com.adminfortrain.controller;
 import com.adminfortrain.admin.impl.UserServiceImpl;
 import com.adminfortrain.admin.mapper.UserMapper;
 import com.adminfortrain.admin.model.User;
+import com.adminfortrain.peopleCount.mapper.DatetimeMapper;
+import com.adminfortrain.peopleCount.model.Datetime;
 import com.adminfortrain.vipAccount.impl.VipServiceImpl;
 import com.adminfortrain.vipAccount.mapper.VipMapper;
 import com.adminfortrain.vipAccount.model.Vip;
@@ -44,6 +46,9 @@ public class indexController {
 
     @Resource
     private RedisTemplate<String,Vip> template;
+
+    @Autowired
+    DatetimeMapper datetimeMapper;
 
     @Autowired
     VipServiceImpl vipService;
@@ -243,15 +248,24 @@ public class indexController {
 
         Vip vip = vipMapper.selectById(VIPID);
 
-            if(vip.getSigncation() != 0){
+        SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
+        String format1 = dateFormat1.format(new Date());
+        Date parse=null;
+        try {
+            parse= dateFormat1.parse(format1);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if(vip.getSigncation() != 0 && vip.getSigndate().compareTo(parse) == 0){
                 return null;
             }
 
         UpdateWrapper<Vip> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("id",vip.getId());
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-hh");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String format = dateFormat.format(new Date());
+        System.out.println(format);
         Date date = null;
         try {
             date = dateFormat.parse(format);
@@ -272,6 +286,36 @@ public class indexController {
     public String unknown(){
 
         return "权限不足";
+    }
+
+    /*用于给swagger扫描到此实体类！*/
+    @RequestMapping("/scan")
+    public User scan(){
+        return new User();
+    }
+
+    @RequestMapping("/todaycount")
+    @ResponseBody
+    public int pcount(String day){
+        QueryWrapper<Datetime> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("tdate",day);
+        Datetime one = datetimeMapper.selectOne(queryWrapper);
+        System.out.println(day);
+        return one.getCount();
+    }
+
+    @RequestMapping("/alldate")
+    @ResponseBody
+    public List<Datetime> tdate(){
+
+        List<Datetime> datetimes = datetimeMapper.selectList(null);
+        ArrayList<Datetime> dates = new ArrayList<>();
+        for (Datetime datetime : datetimes) {
+            dates.add(datetime);
+        }
+
+        System.out.println(datetimes);
+        return dates;
     }
 
 }

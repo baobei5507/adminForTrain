@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan({"com.adminfortrain.admin.mapper","com.adminfortrain.vipAccount.mapper"})
+@MapperScan({"com.adminfortrain.admin.mapper","com.adminfortrain.vipAccount.mapper","com.adminfortrain.peopleCount.mapper"})
 public class AdminForTrainApplication {
 
     public static void main(String[] args) {

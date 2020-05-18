@@ -7,6 +7,10 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -22,6 +26,7 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
+@ApiModel("管理员")
 public class User implements Serializable {
 
     private static final long serialVersionUID=1L;
@@ -29,8 +34,9 @@ public class User implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private int id;
 
+    @ApiModelProperty("用户名")
     private String username;
-
+    @ApiModelProperty("密码")
     private String password;
 
     private String perms;

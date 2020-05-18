@@ -25,11 +25,14 @@ public class UserRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         System.out.println("执行了授权");
 
+        //new 一个简单的授权工具，用来给当前用户验证授权
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 
+        //subject获取当前的用户对象
         Subject subject = SecurityUtils.getSubject();
         User currentUser= (User) subject.getPrincipal();
 
+        //将用户的Perms（授予的权限）添加到组件中，后续验证使用
         info.addStringPermission(currentUser.getPerms());
 
         return info;

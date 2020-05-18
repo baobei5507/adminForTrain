@@ -22,6 +22,8 @@ public class ShiroConfig {
 
          //authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问
         Map<String, String> filterMap = new LinkedHashMap<>();
+
+        //在上次讲解的基础上，将此处需要权限，以及需要什么perms权限的网址添加进来，即可完成授权验证！
         //注意此处的页面路劲不是网页名称，而是MVC中的方法
         filterMap.put("/main","perms[user:add]");
         //拦截所有vip请求的操作
