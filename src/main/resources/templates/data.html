@@ -45,90 +45,111 @@
     var myChart = echarts.init(document.getElementById('fang'));
         var ten=0,twe=0,thir=0;//存放年龄
         var man=0,girl=0;//存放性别
-        $.ajax({
-            url:"/agesource",
-            async:false,
-            success:function (data) {
-                ten=data[0];
-                twe=data[1];
-                thir=data[2];
-            }
-        })
+
+
+
+    myChart.showLoading({
+        text: 'loading',
+        color: '#c23531',
+        textColor: '#000',
+        maskColor: 'rgba(255,255,255,0)'
+    });
 
     $.ajax({
-        url:"/sexsource",
-        async:false,
+        url:"/agesource",
         success:function (data) {
-            man=data[0];
-            girl=data[1];
-            console.log(man);
-            console.log(girl);
+            ten=data[0];
+            twe=data[1];
+            thir=data[2];
+            // 指定图表的配置项和数据
+            myChart.hideLoading();
+            myChart.setOption ({
+                title: {
+                    text: '会员年龄分布'
+                },
+                tooltip: {},
+                legend: {
+                    data:['年龄']
+                },
+                xAxis: {
+                    data: ["10-20","20-30","30-40"]
+                },
+                yAxis: {},
+                series: [{
+                    name: '年龄',
+                    type: 'bar',
+                    data: [ten, twe, thir]
+                }]
+            });
         }
     })
 
-    // 指定图表的配置项和数据
-    var option = {
-        title: {
-            text: '会员年龄分布'
-        },
-        tooltip: {},
-        legend: {
-            data:['年龄']
-        },
-        xAxis: {
-            data: ["10-20","20-30","30-40"]
-        },
-        yAxis: {},
-        series: [{
-            name: '年龄',
-            type: 'bar',
-            data: [ten, twe, thir]
-        }]
-    };
+
+
     // 绘制图表。
-    echarts.init(document.getElementById('yuan')).setOption({
-        tooltip: {
-            show:true
-        },
-        series: {
+    var myChart1 = echarts.init(document.getElementById('yuan'));
+        myChart1.showLoading({
+            text: 'loading',
+            color: '#0db5c2',
+            textColor: '#000',
+            maskColor: 'rgba(255,255,255,0)',
+        });
 
-            type: 'pie',
-            name:'男女比例',
-            data: [
-                {value: man,name: '男',},
-                { value: girl,name: '女'}
-            ].sort(function (a, b) { return a.value - b.value; }),
-            roseType: 'radius',
-            label: {
-                color: 'rgba(255, 255, 255, 0.3)'
-            },
-            labelLine: {
-                lineStyle: {
-                    color: 'rgba(255, 255, 255, 0.3)'
+    $.ajax({
+        url:"/sexsource",
+        success:function (data) {
+            man=data[0];
+            girl=data[1];
+            myChart1.hideLoading();
+            myChart1.setOption({
+                tooltip: {
+                    show:true
                 },
-                smooth: 0.2,
-                length: 10,
-                length2: 20
-            },
-            itemStyle: {
-                emphasis: {
-                    shadowBlur: 10,
-                    shadowOffsetX: 0,
-                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                }
-            },
-                color:['#0593d4','#c14db6']
-           ,
-            animationType: 'scale',
-            animationEasing: 'elasticOut',
-            animationDelay: function (idx) {
-                return Math.random() * 200;
-            }
-        }
-    });
+                series: {
 
-    // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
+                    type: 'pie',
+                    name:'男女比例',
+                    data: [
+                        {value: man,name: '男',},
+                        { value: girl,name: '女'}
+                    ].sort(function (a, b) { return a.value - b.value; }),
+                    roseType: 'radius',
+                    label: {
+                        color: 'rgba(255, 255, 255, 0.3)'
+                    },
+                    labelLine: {
+                        lineStyle: {
+                            color: 'rgba(255, 255, 255, 0.3)'
+                        },
+                        smooth: 0.2,
+                        length: 10,
+                        length2: 20
+                    },
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    },
+                    color:['#0593d4','#c14db6']
+                    ,
+                    animationType: 'scale',
+                    animationEasing: 'elasticOut',
+                    animationDelay: function (idx) {
+                        return Math.random() * 200;
+                    }
+                }
+            });
+        },
+        error:function () {
+            myChart1.hideLoading();
+            window.alert("加载失败");
+        }
+    })
+
+
+
 </script>
 
 

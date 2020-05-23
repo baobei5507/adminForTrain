@@ -23,7 +23,7 @@ public class UserRealm extends AuthorizingRealm {
     //授权
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        System.out.println("执行了授权");
+        System.out.println("执行了权限验证，验证通过！");
 
         //new 一个简单的授权工具，用来给当前用户验证授权
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();

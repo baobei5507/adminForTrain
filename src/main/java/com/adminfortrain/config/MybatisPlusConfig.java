@@ -7,7 +7,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
-//@EnableTransactionManagement 开启会报错！！！！坑！！！！！
+
+//
+@EnableTransactionManagement (proxyTargetClass = true)
 @Configuration
 @MapperScan("com.adminfortrain.vipAccount.mapper")
 //mp分页配置

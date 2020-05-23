@@ -1,18 +1,14 @@
 package com.adminfortrain.controller;
 
 
-import com.adminfortrain.admin.impl.UserServiceImpl;
 import com.adminfortrain.admin.mapper.UserMapper;
 import com.adminfortrain.admin.model.User;
-import com.adminfortrain.peopleCount.mapper.DatetimeMapper;
-import com.adminfortrain.peopleCount.model.Datetime;
 import com.adminfortrain.vipAccount.impl.VipServiceImpl;
 import com.adminfortrain.vipAccount.mapper.VipMapper;
 import com.adminfortrain.vipAccount.model.Vip;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import io.swagger.models.auth.In;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -20,20 +16,18 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -46,9 +40,6 @@ public class indexController {
 
     @Resource
     private RedisTemplate<String,Vip> template;
-
-    @Autowired
-    DatetimeMapper datetimeMapper;
 
     @Autowired
     VipServiceImpl vipService;
@@ -86,17 +77,31 @@ public class indexController {
         List<Vip> vips = vipPage.getRecords();
 
 
-        //“懒加载” 验证是否过期
+        // 验证是否过期
         for (Vip vip : vips) {
+
             if(vip.getEndtime().compareTo(new Date()) == -1)
                 vipMapper.deleteById(vip.getId());
         }
 
 
+        //导航条页数显示
+        long current = vipPage.getCurrent();
+        ArrayList<Object> list = new ArrayList<>();
+        list.add(current);
+        for(int i=1;i<=3;i++){
+            if( current- i > 0){
+                list.add(0,current-i);
+            }
+
+            if(current + i <= vipPage.getPages()){
+                list.add(current + i);
+            }
+        }
 
         model.addAttribute("page",vipPage);
         model.addAttribute("vips",vipPage.getRecords());
-        model.addAttribute("totalPage",vipPage.getPages());
+        model.addAttribute("totalPage", list);
 
         return "mainpage";
     }
@@ -294,28 +299,6 @@ public class indexController {
         return new User();
     }
 
-    @RequestMapping("/todaycount")
-    @ResponseBody
-    public int pcount(String day){
-        QueryWrapper<Datetime> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("tdate",day);
-        Datetime one = datetimeMapper.selectOne(queryWrapper);
-        System.out.println(day);
-        return one.getCount();
-    }
 
-    @RequestMapping("/alldate")
-    @ResponseBody
-    public List<Datetime> tdate(){
-
-        List<Datetime> datetimes = datetimeMapper.selectList(null);
-        ArrayList<Datetime> dates = new ArrayList<>();
-        for (Datetime datetime : datetimes) {
-            dates.add(datetime);
-        }
-
-        System.out.println(datetimes);
-        return dates;
-    }
 
 }

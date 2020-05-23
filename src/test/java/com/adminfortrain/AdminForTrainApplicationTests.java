@@ -76,4 +76,9 @@ class AdminForTrainApplicationTests {
         List<Vip> del = vipMapper.getDel(1, 5);
         del.forEach(System.out::println);
     }
+
+    @Test
+    void test8(){
+
+    }
 }

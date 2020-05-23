@@ -117,29 +117,20 @@ public class vipController {
         return "redirect:/main";
     }
 
-    @GetMapping("/delete")
+    @RequestMapping("/delete")
+    @ResponseBody
     public String delete(
-            HttpServletRequest request,
-            Model model
+           @RequestParam("id") int id
     ){
-        int id = Integer.parseInt(request.getParameter("deleteid"));
-        Vip vip = vipMapper.selectById(id);
-
-
-        model.addAttribute("vip",vip);
-        request.getSession().setAttribute("deleteid",id);
-        return "deletevip";
+        try {
+            vipMapper.deleteById(id);
+        } catch (Exception e) {
+            return "null";
+        }
+        return "删除成功";
     }
 
-    @GetMapping("/delete/commit")
-    public String suredelete(
-            HttpServletRequest request
-    ){
-        int id = Integer.parseInt(request.getParameter("deleteid"));
-        vipMapper.deleteById(id);
 
-        return "redirect:/main";
-    }
 
     //主页
     @GetMapping("/expireVip")

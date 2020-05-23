@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Select;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ import java.util.List;
  * @since 2020-04-24
  */
 
-
+@Transactional
 @Repository
 public interface UserMapper extends BaseMapper<User> {
     public List<User> selectAll();

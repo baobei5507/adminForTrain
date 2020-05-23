@@ -73,10 +73,10 @@
                         <td  th:text="${#dates.format(vip.begintime, 'yyyy-MM-dd HH:mm:ss')}"></td>
                         <td th:text="${#dates.format(vip.endtime, 'yyyy-MM-dd HH:mm:ss')}"></td>
                         <td>
-                            <a th:href="@{/vip/delete?deleteid=}+${vip.id}">
-                                <button class="btn btn-sm btn-primary"
+
+                                <button th:value="${vip.id}" name="del" class="btn btn-sm btn-primary"
                                 >删除</button>
-                            </a>
+
                                <button class="btn btn-sm btn-danger" name="verify"  th:value="${vip.id}"
                                >编辑</button>
                         </td>
@@ -88,18 +88,32 @@
                     <ul class="pagination">
                         <li th:if="${page.hasPrevious()}" >
                             <a   th:href="'/main?pageNum=' + ${page.getCurrent()-1}" aria-label="Previous">
+                                <span aria-hidden="true">&lsaquo;</span>
+                            </a>
+                        </li>
+                        <li th:if="${page.hasPrevious()}" >
+                            <a   th:href="'/main?pageNum=' + ${1}" aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
                         </li>
-                        <li th:each="pageNum:${#numbers.sequence(0, totalPage-1)}">
-                            <a th:href="'/main?pageNum=' + ${pageNum+1}" th:text="${pageNum + 1}" >
+                        <li th:each="pageNum:${totalPage}" th:class="${page.getCurrent() == pageNum}? 'active' : '' ">
+                            <a th:href="'/main?pageNum=' + ${pageNum}" th:text="${pageNum}" >
                                 <span class="sr-only">(current)</span>
                             </a>
                         </li>
+<!--                        <li   th:each="page :${pagination.pages}" th:class="${pagination.page==page}? 'active':''">-->
+<!--                            <a href="/" th:href="@{/(page=${page})}" th:text="${page}" >-->
+<!--                            </a>-->
+<!--                        </li>-->
                         </li>
 
                         <li th:if="${page.hasNext()}">
                             <a th:href="'/main?pageNum=' + ${page.getCurrent()+1}" aria-label="Next">
+                                <span aria-hidden="true">&rsaquo;</span>
+                            </a>
+                        </li>
+                        <li th:if="${page.hasNext()}">
+                            <a th:href="'/main?pageNum=' + ${page.getPages()}" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
                         </li>
@@ -117,7 +131,38 @@
 
 
 <script>
+    $(":button[name='del']").click(function () {
+        var val = $(this).val();
 
+        layer.open({
+            type: 1,
+            content: '确定要删除id为'+val+'的会员吗',
+            shadeClose:true,
+            btn: ['确定', '取消'],
+            btn1:function () {
+                $.ajax({
+                    url:"/vip/delete?id="+val,
+                    async:false,
+                    success:function (data) {
+                        if(data == "删除成功"){
+                            window.alert(data);
+                            location.reload();
+                        }else {
+                            window.alert("删除失败");
+                        }
+
+                    }
+                })
+            },
+            btn2:function () {
+                layer.closeAll();
+            }
+
+        });
+
+
+
+    })
 
 $(":button[name='verify']").on('click',function () {
     var uid = $(this).val();
@@ -153,24 +198,9 @@ Date.prototype.Format = function (fmt) {
         if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     return fmt;
 }
-$.ajax({
-    url:"/todaycount",
-    data:{'day':new Date().Format("yyyy-MM-dd")},
-    async:false,
-    success:function (data) {
-        count=data;
-        console.log(count);
-    }
-})
 
-$.ajax({
-    url:"/todaydate",
-    async:false,
-    success:function (data) {
-        d=data;
-        console.log(d);
-    }
-})
+
+
 
 var myChart = echarts.init(document.getElementById('main'));
 

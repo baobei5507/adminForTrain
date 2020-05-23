@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.toolkit.Constants;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.management.Query;
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.List;
  * @since 2020-04-25
  */
 @Repository
+@Transactional
 public interface VipMapper extends BaseMapper<Vip> {
 
     @Select("select * from vip  ${ew.customSqlSegment}")
