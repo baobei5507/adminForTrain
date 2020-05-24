@@ -22,7 +22,6 @@ import java.util.List;
  * @since 2020-04-25
  */
 @Repository
-@Transactional
 public interface VipMapper extends BaseMapper<Vip> {
 
     @Select("select * from vip  ${ew.customSqlSegment}")

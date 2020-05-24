@@ -79,6 +79,9 @@ class AdminForTrainApplicationTests {
 
     @Test
     void test8(){
-
+        QueryWrapper<Vip> queryWrapper = new QueryWrapper<>();
+        queryWrapper.between("age",10,20);
+        List<Object> list = vipMapper.selectObjs(queryWrapper);
+        list.forEach(System.out::println);
     }
 }

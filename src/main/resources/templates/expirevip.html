@@ -71,8 +71,8 @@
                             <td th:text="${vip.age}"></td>
                             <td th:text="${vip.email}"></td>
                             <td th:text="${vip.telephone}"></td>
-                            <td  th:text="${vip.begintime}"></td>
-                            <td th:text="${vip.endtime}"></td>
+                            <td  th:text="${#dates.format(vip.begintime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                            <td th:text="${#dates.format(vip.endtime, 'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td>
 
                             </td>
@@ -84,11 +84,16 @@
                         <ul class="pagination">
                             <li th:if="${page.hasPrevious()}" >
                                 <a   th:href="'/main?pageNum=' + ${page.getCurrent()-1}" aria-label="Previous">
+                                    <span aria-hidden="true">&lsaquo;</span>
+                                </a>
+                            </li>
+                            <li th:if="${page.hasPrevious()}" >
+                                <a   th:href="'/main?pageNum=' + ${1}" aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
                             </li>
-                            <li th:each="pageNum:${#numbers.sequence(0, totalPage-1)}">
-                                <a th:href="'/main?pageNum=' + ${pageNum+1}" th:text="${pageNum + 1}" >
+                            <li th:each="pageNum:${totalPage}" th:class="${page.getCurrent() == pageNum}? 'active' : '' ">
+                                <a th:href="'/main?pageNum=' + ${pageNum}" th:text="${pageNum}" >
                                     <span class="sr-only">(current)</span>
                                 </a>
                             </li>
@@ -96,6 +101,11 @@
 
                             <li th:if="${page.hasNext()}">
                                 <a th:href="'/main?pageNum=' + ${page.getCurrent()+1}" aria-label="Next">
+                                    <span aria-hidden="true">&rsaquo;</span>
+                                </a>
+                            </li>
+                            <li th:if="${page.hasNext()}">
+                                <a th:href="'/main?pageNum=' + ${page.getPages()}" aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
                             </li>

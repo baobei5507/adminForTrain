@@ -57,8 +57,8 @@
                         <td th:text="${vip.age}"></td>
                         <td th:text="${vip.email}"></td>
                         <td th:text="${vip.telephone}"></td>
-                        <td  th:text="${vip.begintime}"></td>
-                        <td th:text="${vip.endtime}"></td>
+                        <td  th:text="${#dates.format(vip.begintime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                        <td th:text="${#dates.format(vip.endtime, 'yyyy-MM-dd HH:mm:ss')}"></td>
                     </tr>
                     </tbody>
                 </table>

@@ -23,7 +23,7 @@ import java.util.List;
  * @since 2020-04-24
  */
 
-@Transactional
+
 @Repository
 public interface UserMapper extends BaseMapper<User> {
     public List<User> selectAll();

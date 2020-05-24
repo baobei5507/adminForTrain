@@ -7,13 +7,16 @@ import com.adminfortrain.vipAccount.model.Vip;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,6 +29,9 @@ public class vipController {
 
     @Autowired
     VipMapper vipMapper;
+
+    @Resource
+    private RedisTemplate<String,Vip> template;
 
     @GetMapping("/add")
     public String addvip(){
@@ -69,7 +75,7 @@ public class vipController {
 
         vip.setBegintime(new Date());
 
-        vipMapper.insert(vip);
+        vipService.insertVip(vip);
         return "addvip";
     }
 
@@ -113,7 +119,7 @@ public class vipController {
 
         UpdateWrapper<Vip> wrapper = new UpdateWrapper<>();
         wrapper.eq("id",id);
-        vipService.update(vip, wrapper);
+        vipService.updatevip(vip, wrapper);
         return "redirect:/main";
     }
 
@@ -123,7 +129,7 @@ public class vipController {
            @RequestParam("id") int id
     ){
         try {
-            vipMapper.deleteById(id);
+            vipService.deletebyid(id);
         } catch (Exception e) {
             return "null";
         }
@@ -132,7 +138,7 @@ public class vipController {
 
 
 
-    //主页
+    //过期或删除了的vip
     @GetMapping("/expireVip")
     public String expire(
             Model model,
@@ -144,10 +150,23 @@ public class vipController {
 
         Page vipPage = vipMapper.selectPage(new Page<>(currentpage, 5),null);
 
+       //导航条页数显示
+        long current = vipPage.getCurrent();
+        ArrayList<Object> list = new ArrayList<>();
+        list.add(current);
+        for(int i=1;i<=3;i++){
+            if( current- i > 0){
+                list.add(0,current-i);
+            }
+
+            if(current + i <= vipPage.getPages()){
+                list.add(current + i);
+            }
+        }
 
         model.addAttribute("page",vipPage);
         model.addAttribute("vips",delvips);
-        model.addAttribute("totalPage",vipPage.getPages());
+        model.addAttribute("totalPage",list);
 
         return "expirevip";
     }

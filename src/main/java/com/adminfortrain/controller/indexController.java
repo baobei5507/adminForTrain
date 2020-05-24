@@ -1,8 +1,10 @@
 package com.adminfortrain.controller;
 
 
+import com.adminfortrain.admin.impl.UserServiceImpl;
 import com.adminfortrain.admin.mapper.UserMapper;
 import com.adminfortrain.admin.model.User;
+import com.adminfortrain.task.Schedule;
 import com.adminfortrain.vipAccount.impl.VipServiceImpl;
 import com.adminfortrain.vipAccount.mapper.VipMapper;
 import com.adminfortrain.vipAccount.model.Vip;
@@ -33,13 +35,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+
 @Controller
 public class indexController {
 
 
 
     @Resource
-    private RedisTemplate<String,Vip> template;
+    private RedisTemplate<String,Integer> template;
 
     @Autowired
     VipServiceImpl vipService;
@@ -48,12 +51,20 @@ public class indexController {
     VipMapper vipMapper;
 
     @Autowired
+    UserServiceImpl userService;
+
+    @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    Schedule schedule;
 
     //退出页面
     @RequestMapping("/logout")
-    public String logout(HttpServletRequest request){
-        request.getSession().removeAttribute("token");
+    public String logout(){
+        //获取当前session中用户并清除
+        Subject currentUser = SecurityUtils.getSubject();
+        currentUser.logout();
 
         return "redirect:/";
     }
@@ -81,7 +92,7 @@ public class indexController {
         for (Vip vip : vips) {
 
             if(vip.getEndtime().compareTo(new Date()) == -1)
-                vipMapper.deleteById(vip.getId());
+                vipService.deletebyid(vip.getId());
         }
 
 
@@ -110,6 +121,7 @@ public class indexController {
     public String login(String username, String password, Model model, HttpServletRequest request){
         //获取当前用户
         Subject subject = SecurityUtils.getSubject();
+
         //封装用户的登录信息
         UsernamePasswordToken token = new UsernamePasswordToken(username,password);
 
@@ -166,7 +178,7 @@ public class indexController {
         user.setPassword(request.getParameter("password"));
         user.setDeleted(0);
         user.setPerms("user:add");
-        userMapper.insert(user);
+        userService.insertUser(user);
         return "redirect:/";
     }
 
@@ -202,42 +214,91 @@ public class indexController {
     @ResponseBody
     public List<Integer> datasource(){
 
+        Integer ten = null;
+        Integer two = null;
+        Integer three = null;
 
-        QueryWrapper<Vip> queryWrapper = new QueryWrapper<>();
-        queryWrapper.between("age",10,20);
-        List<Object> vip1 = vipMapper.selectObjs(queryWrapper);
+        if(template.opsForValue().get("ten") == null){
+            List<Object> vip1 = new ArrayList<>();
+            schedule.setRediskey("ten");
+            schedule.setVip(vip1);
+            schedule.setStart(10);
+            schedule.setEnd(20);
+            schedule.timeup();
+            System.out.println("1没走缓存");
+            ten = vip1.size();
+        }else {
+            System.out.println("1走了缓存");
+            ten = template.opsForValue().get("ten");
+        }
 
+        if(template.opsForValue().get("two") == null){
+            List<Object> vip2 = new ArrayList<>();
+            schedule.setRediskey("two");
+            schedule.setVip(vip2);
+            schedule.setStart(20);
+            schedule.setEnd(30);
+            schedule.timeup();
+            System.out.println("2没走缓存");
+        two = vip2.size();
+        }else {
+            System.out.println("2走了缓存");
+           two = template.opsForValue().get("two");
+        }
 
-
-
-        QueryWrapper<Vip> queryWrapper2 = new QueryWrapper<>();
-        queryWrapper2.between("age",20,30);
-        List<Object> vip2 = vipMapper.selectObjs(queryWrapper2);
-
-        QueryWrapper<Vip> queryWrapper3 = new QueryWrapper<>();
-        queryWrapper3.between("age",30,40);
-        List<Object> vip3 = vipMapper.selectObjs(queryWrapper3);
-
+        if(template.opsForValue().get("three") == null){
+            List<Object> vip3 = new ArrayList<>();
+            schedule.setRediskey("three");
+            schedule.setVip(vip3);
+            schedule.setStart(30);
+            schedule.setEnd(40);
+            schedule.timeup();
+        System.out.println("3没走缓存");
+        three = vip3.size();
+        } else {
+            System.out.println("3走了缓存");
+            three = template.opsForValue().get("three");
+        }
         ArrayList<Integer> list = new ArrayList<>();
-        list.add(vip1.size());
-        list.add(vip2.size());
-        list.add(vip3.size());
+        list.add(ten);
+        list.add(two);
+        list.add(three);
+
         return list;
     }
+
+
 
     @RequestMapping("/sexsource")
     @ResponseBody
     public List<Integer> sexsource(){
+        Integer men = null;
+        Integer girls = null;
 
-        QueryWrapper<Vip> man = new QueryWrapper<>();
-        man.eq("sex","男");
-        List<Object> manCou = vipMapper.selectObjs(man);
+        if (template.opsForValue().get("man") == null) {
+            QueryWrapper<Vip> man = new QueryWrapper<>();
+            man.eq("sex","男");
+            List<Object> manCou = vipMapper.selectObjs(man);
+            template.opsForValue().set("man",manCou.size());
+            men = manCou.size();
+        }else {
+            men = template.opsForValue().get("man");
+        }
+
+        if (template.opsForValue().get("girl") == null) {
         QueryWrapper<Vip> gril = new QueryWrapper<>();
         gril.eq("sex","女");
         List<Object> girlCou = vipMapper.selectObjs(gril);
+        template.opsForValue().set("girl",girlCou.size());
+        girls = girlCou.size();
+        }else {
+            girls = template.opsForValue().get("girl");
+        }
+
         ArrayList<Integer> list = new ArrayList<>();
-        list.add(manCou.size());
-        list.add(girlCou.size());
+        list.add(men);
+        list.add(girls);
+
         return list;
     }
 
@@ -282,7 +343,7 @@ public class indexController {
         vip1.setSigncount(vip.getSigncount()+1);
         vip1.setSigndate(date);
 
-        vipMapper.update(vip1, updateWrapper);
+        vipService.updatevip(vip1, updateWrapper);
         return vip;
     }
 
