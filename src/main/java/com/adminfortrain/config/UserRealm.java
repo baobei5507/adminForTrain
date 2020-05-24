@@ -52,14 +52,9 @@ public class UserRealm extends AuthorizingRealm {
         User user = userMapper.selectOne(queryWrapper);
 
         try {
-            //后台测试打印用户是否正确获取
-            System.out.println(user.getUsername()+" "+user.getPassword());
-
             //如果用户不存在
             if(user.getUsername() == null)
                 return null; //自动抛出UnknownAccountException
-
-            System.out.println(userToken.getUsername()+"......");
         } catch (Exception e) {
            return null;
         }

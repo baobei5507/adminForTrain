@@ -186,7 +186,6 @@ public class indexController {
     @ResponseBody
     public String checkout(String username){
 
-        System.out.println(username);
 
         User user = null;
         try {
@@ -331,7 +330,6 @@ public class indexController {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String format = dateFormat.format(new Date());
-        System.out.println(format);
         Date date = null;
         try {
             date = dateFormat.parse(format);
@@ -348,10 +346,9 @@ public class indexController {
     }
 
     @RequestMapping("/unknow")
-    @ResponseBody
     public String unknown(){
 
-        return "权限不足";
+        return "unknowauthor";
     }
 
     /*用于给swagger扫描到此实体类！*/
