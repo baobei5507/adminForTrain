@@ -82,6 +82,20 @@ public class indexController {
             @RequestParam(value = "pageNum", defaultValue = "1") int currentpage
     ){
 
+        QueryWrapper<Vip> wrapper = new QueryWrapper<>();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        String s = format.format(new Date());
+        Date date = null;
+        try {
+            date = format.parse(s);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        wrapper.eq("signcation",1)
+                .eq("signdate", date);
+        List<Vip> vipList = vipMapper.selectList(wrapper);
+        model.addAttribute("todayPer",vipList.size());
+
         //分页查询
         Page<Vip> vipPage = new Page<>(currentpage,5);
          vipMapper.selectPage(vipPage, null);
