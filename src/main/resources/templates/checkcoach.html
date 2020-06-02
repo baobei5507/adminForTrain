@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="../css/layui.css">
+    <link rel="stylesheet" href="../css/sNav.css">
+    <link rel="stylesheet" type="text/css" href="../css/gradualChange.css">
+    <link rel="stylesheet" type="text/css" href="../elsecssjs/main.css">
+    <script src="../layui.all.js"></script>
+    <script src="../js/jquery-3.5.0.min.js"></script>
+    <script src="../js/sNav.min.js"></script>
+    <script src="../js/echarts.min.js"></script>
+    <script type="text/javascript" src="../elsecssjs/main.js"></script>
+    <script src="../js/bootstrap.min.js" typeName="application/javascript"></script>
+
+<head>
+    <meta charset="UTF-8">
+    <title>健身管理系统</title>
+</head>
+<body>
+
+
+
+<div th:insert="navigation.html">
+
+</div>
+
+<div class="word1" >
+    <div class="row">
+        <div class="row">
+            <div class="col-lg-9" >
+                <table class="table table-bordered">
+                    <colgroup>
+                        <col width="150">
+                        <col width="200">
+                        <col>
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>教练号</th>
+                        <th>教练名</th>
+                        <th>邮箱</th>
+                        <th>年龄</th>
+                        <th>电话号码</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="coach :${coachs}">
+                        <td th:text="${coach.coachId}" id="coachid"></td>
+                        <td th:text="${coach.coachName}"></td>
+                        <td th:text="${coach.coachEmail}"></td>
+                        <td th:text="${coach.coachAge}"></td>
+                        <td th:text="${coach.coachTelephone}"></td>
+                        <td>
+
+                            <button th:value="${coach.coachId}" name="del" class="btn btn-sm btn-primary"
+                            >删除</button>
+
+                            <button class="btn btn-sm btn-danger" name="verify"  th:value="${coach.coachId}"
+                            >编辑</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+        </div>
+
+<script>
+</script>
+</body>
+</html>

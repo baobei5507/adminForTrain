@@ -1,6 +1,5 @@
 package com.adminfortrain.config;
 
-import org.apache.shiro.mgt.DefaultSecurityManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -28,6 +27,8 @@ public class ShiroConfig {
         filterMap.put("/main","perms[user:add]");
         //拦截所有vip请求的操作
         filterMap.put("/vip/**","perms[user:add]");
+        //拦截所有Coach请求的操作
+        filterMap.put("/coa/**","perms[user:add]");
         bean.setFilterChainDefinitionMap(filterMap);
 
         //设置登录返回路径

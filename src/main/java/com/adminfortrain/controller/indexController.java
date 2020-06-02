@@ -371,6 +371,9 @@ public class indexController {
         return new User();
     }
 
-
+    @RequestMapping("/project")
+    public String project(){
+        return "project";
+    }
 
 }

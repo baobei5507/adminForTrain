@@ -8,7 +8,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
-@MapperScan({"com.adminfortrain.admin.mapper","com.adminfortrain.vipAccount.mapper"})
+@MapperScan({"com.adminfortrain.admin.mapper","com.adminfortrain.vipAccount.mapper","com.adminfortrain.Coa.mapper"})
 public class AdminForTrainApplication {
 
     public static void main(String[] args) {

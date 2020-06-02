@@ -47,6 +47,7 @@
                         <th>电话号码</th>
                         <th>入会时间</th>
                         <th>到期时间</th>
+                        <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -59,6 +60,14 @@
                         <td th:text="${vip.telephone}"></td>
                         <td  th:text="${#dates.format(vip.begintime, 'yyyy-MM-dd HH:mm:ss')}"></td>
                         <td th:text="${#dates.format(vip.endtime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                        <td>
+
+                            <button th:value="${vip.id}" name="del" class="btn btn-sm btn-primary"
+                            >删除</button>
+
+                            <button class="btn btn-sm btn-danger" name="verify"  th:value="${vip.id}"
+                            >编辑</button>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -74,7 +83,54 @@
     </div>
 
 <script>
-    var container = document.getElementById('view-chart');
+    $(":button[name='del']").click(function () {
+        var val = $(this).val();
+
+        layer.open({
+            type: 1,
+            content: '确定要删除id为'+val+'的会员吗',
+            shadeClose:true,
+            btn: ['确定', '取消'],
+            btn1:function () {
+                $.ajax({
+                    url:"/vip/delete?id="+val,
+                    async:false,
+                    success:function (data) {
+                        if(data == "删除成功"){
+                            window.alert(data);
+                            location.reload();
+                        }else {
+                            window.alert("删除失败");
+                        }
+
+                    }
+                })
+            },
+            btn2:function () {
+                layer.closeAll();
+            }
+
+        });
+    })
+
+    $(":button[name='verify']").on('click',function () {
+        var uid = $(this).val();
+        var count = null;
+        var d = null;
+
+        layer.open({
+            type:2,
+            title:'编辑',
+            area:['500px','600px'],
+            shadeClose:true,//点击遮罩层关闭
+            content: "/vip/getit?vipid="+uid,
+            anim:5,
+            end:function () {
+                location.reload();
+            }
+        })})
+
+        var container = document.getElementById('view-chart');
     // 初始化echarts对象
     var myContainer = echarts.init(container);
     var base = + new Date(2020,3,30);

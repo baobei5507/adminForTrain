@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="../css/layui.css">
+    <link rel="stylesheet" href="../css/sNav.css">
+    <link rel="stylesheet" type="text/css" href="../css/gradualChange.css">
+    <script src="../layui.all.js"></script>
+    <script src="../gsap.min.js"></script>
+    <script src="../js/jquery-3.5.0.min.js"></script>
+    <script src="../js/sNav.min.js"></script>
+    <script src="../js/echarts.min.js"></script>
+    <script src="../js/bootstrap.min.js" typeName="application/javascript"></script>
+
+<head>
+    <meta charset="UTF-8">
+    <title>健身管理系统</title>
+</head>
+<body>
+
+
+
+
+
+<div th:insert="navigation.html">
+
+</div>
+
+        <form action="/coa/search"  style=" float: right ">
+            <input type="text"  name="search_id">
+            <input  type="submit" class="layui-btn layui-btn-radius layui-btn-primary" value="搜索">
+            <span style="color: white">请填写教练号！！</span>
+        </form>
+
+    <div class="container-fluid">
+        <div class="word1" >
+    <div class="row">
+        <div class="row">
+            <div class="col-lg-9" >
+                <table class="table table-bordered">
+                    <colgroup>
+                        <col width="150">
+                        <col width="200">
+                        <col>
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>教练号</th>
+                        <th>教练名</th>
+                        <th>邮箱</th>
+                        <th>年龄</th>
+                        <th>电话号码</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="coach :${coachs}">
+                        <td th:text="${coach.coachId}" id="coachid"></td>
+                        <td th:text="${coach.coachName}"></td>
+                        <td th:text="${coach.coachEmail}"></td>
+                        <td th:text="${coach.coachAge}"></td>
+                        <td th:text="${coach.coachTelephone}"></td>
+                        <td>
+
+                                <button th:value="${coach.coachId}" name="del" class="btn btn-sm btn-primary"
+                                >删除</button>
+
+                               <button class="btn btn-sm btn-danger" name="verify"  th:value="${coach.coachId}"
+                               >编辑</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <!--导航条-->
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <li th:if="${page.hasPrevious()}" >
+                            <a   th:href="'/main?pageNum=' + ${page.getCurrent()-1}" aria-label="Previous">
+                                <span aria-hidden="true">&lsaquo;</span>
+                            </a>
+                        </li>
+                        <li th:if="${page.hasPrevious()}" >
+                            <a   th:href="'/main?pageNum=' + ${1}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li th:each="pageNum:${totalPage}" th:class="${page.getCurrent() == pageNum}? 'active' : '' ">
+                            <a th:href="'/main?pageNum=' + ${pageNum}" th:text="${pageNum}" >
+                                <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        </li>
+
+                        <li th:if="${page.hasNext()}">
+                            <a th:href="'/main?pageNum=' + ${page.getCurrent()+1}" aria-label="Next">
+                                <span aria-hidden="true">&rsaquo;</span>
+                            </a>
+                        </li>
+                        <li th:if="${page.hasNext()}">
+                            <a th:href="'/main?pageNum=' + ${page.getPages()}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+    </div>
+        </div>
+
+
+
+
+
+<script>
+    $(":button[name='del']").click(function () {
+        var val = $(this).val();
+
+        layer.open({
+            type: 1,
+            content: '确定要删除id为'+val+'的教练吗',
+            shadeClose:true,
+            btn: ['确定', '取消'],
+            btn1:function () {
+                $.ajax({
+                    url:"/coa/delete?id="+val,
+                    async:false,
+                    success:function (data) {
+                        if(data == "删除成功"){
+                            window.alert(data);
+                            location.reload();
+                        }else {
+                            window.alert("删除失败");
+                        }
+
+                    }
+                })
+            },
+            btn2:function () {
+                layer.closeAll();
+            }
+
+        });
+
+
+
+    })
+
+$(":button[name='verify']").on('click',function () {
+    var uid = $(this).val();;
+
+    layer.open({
+        type:2,
+        title:'编辑',
+        area:['500px','600px'],
+        shadeClose:true,//点击遮罩层关闭
+        content: "/coa/getit?coachid="+uid,
+        anim:5,
+        end:function () {
+            location.reload();
+        }
+    });
+
+
+})
+
+
+
+
+</script>
+
+
+</body>
+</html>
